@@ -1,4 +1,4 @@
-//Revision 1
+//Revision 2
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const dotenv = require('dotenv').config();
@@ -20,17 +20,16 @@ async function readCSV(content) {
 	return result;
 }
 
-async function run() {
+async function run() { //Most of the program is inside this run function so that the CSV loads properly.
 	const flavors = await readCSV(fs.readFileSync('./beanflavors.csv'));
 	console.log('Done loading flavors.');
-	console.log(flavors[1].short);
 
-	client.once('ready', () => {
+	client.once('ready', () => { //Runs when the bot is connected and ready.
 		console.log('Ready!');
 		client.user.setActivity('beans', {type: "PLAYING"});
 	});
 
-	client.on('ready', () => {
+	client.on('ready', () => { //This block is for changing the status on an interval. Should still work fine if more are added to const status above.
 		setInterval(() => {
 			const index = Math.floor(Math.random() * (status.length -1) + 1);
 			client.user.setActivity(status[index], {type: "PLAYING"});
@@ -39,20 +38,21 @@ async function run() {
 	});
 	
 	client.on('message', message => {
-		var mCont = message.content.toLowerCase();
+		var mCont = message.content.toLowerCase(); //Stores the message as lowercase to make it not case-sensitive for the users.
 
-		if(message.author.id == '95717881165123584' && kong == 1) { //This is for kong mode. Basically, it reacts with :xkong: on one of my friend's server, but only on his messages.
+		if(message.author.id == '95717881165123584' && kong == 1) { //If kong mode is enabled, it will annoy one of my friends with a custom emote on his server.
 			message.react('565923253323956224');
 		}
 	
-		if(mCont.startsWith(prefix) == false) return;
-		if(message.author.bot) return;
+		if(mCont.startsWith(prefix) == false) return; //Does not process messages past this point if they do not have the prefix.
+		if(message.author.bot) return; //Ignores other bots
 	
-		if(mCont === prefix + 'ping') {
+		if(mCont === prefix + 'ping') { //This was basically just a test command.
 			message.channel.send('pong');
 		}
-		if(mCont === prefix + 'flavor') {
-			var flavorSeed = Math.floor(Math.random() * (flavors.length -1) + 1) //Math.round(Math.random()*10);
+
+		if(mCont === prefix + 'flavor') { //Picks a random flavor from a CSV file and replies with an embed with the flavor. Some have images and they have descriptions.
+			var flavorSeed = Math.floor(Math.random() * (flavors.length -1) + 1);
 			const flavorEmbed = new Discord.RichEmbed()
 				.setColor('#0099ff')
 				.setTitle(flavors[flavorSeed].long + ' Beans')
@@ -63,7 +63,7 @@ async function run() {
 			message.channel.send(flavorEmbed);
 		}
 
-		if(mCont === prefix + 'kong') {
+		if(mCont === prefix + 'kong') { //Enables or disables Kong mode.
 			if(kong === 0) {
 				kong = 1;
 				message.channel.send('Kong-mode enabled.');
@@ -72,12 +72,11 @@ async function run() {
 			else {
 				kong = 0
 				message.channel.send('Kong-mode disabled.');
+				message.channel.send(':(');
 			}
 		}
 	});
 }
 run();
-
-
 
 client.login(dtoken);
