@@ -71,6 +71,7 @@ async function run() {
 			else {
 				kong = 0
 				message.channel.send('Kong-mode disabled.');
+				message.channel.send(':(');
 			}
 		}
 	});
