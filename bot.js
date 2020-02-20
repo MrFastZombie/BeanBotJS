@@ -75,6 +75,15 @@ async function run() { //Most of the program is inside this run function so that
 				message.channel.send(':(');
 			}
 		}
+
+		if(mCont.startsWith(prefix + 'bean')) { //DM's the mentioned user with the bean'd image. 
+			var userid = message.mentions.users.first();
+			console.log(userid);
+			if (userid == null) {return;}
+			message.channel.send('they just got beaned');
+			userid.sendMessage('beaned', {files: ["./data/images/beaned.png"] });
+			
+		}
 	});
 }
 run();
