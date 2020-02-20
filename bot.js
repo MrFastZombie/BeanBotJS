@@ -41,7 +41,7 @@ async function run() {
 	client.on('message', message => {
 		var mCont = message.content.toLowerCase();
 
-		if(message.author.id == '95717881165123584' && kong == 1) {
+		if(message.author.id == '95717881165123584' && kong == 1) { //This is for kong mode. Basically, it reacts with :xkong: on one of my friend's server, but only on his messages.
 			message.react('565923253323956224');
 		}
 	
