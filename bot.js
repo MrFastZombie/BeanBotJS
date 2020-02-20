@@ -57,6 +57,7 @@ async function run() {
 				.setColor('#0099ff')
 				.setTitle(flavors[flavorSeed].long + ' Beans')
 				.setDescription(flavors[flavorSeed].description)
+				.setImage(flavors[flavorSeed].image)
 			
 			message.channel.send(flavors[flavorSeed].long);
 			message.channel.send(flavorEmbed);
