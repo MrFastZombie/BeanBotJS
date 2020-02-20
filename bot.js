@@ -1,4 +1,4 @@
-//Revision 1
+//Revision 2
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const dotenv = require('dotenv').config();
