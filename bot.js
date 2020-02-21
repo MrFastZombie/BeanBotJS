@@ -67,7 +67,7 @@ async function run() { //Most of the program is inside this run function so that
 			if(kong === 0) {
 				kong = 1;
 				message.channel.send('Kong-mode enabled.');
-				message.channel.send(':Xkong:');
+				message.channel.send('<:Xkong:565923253323956224>');
 			}
 			else {
 				kong = 0
@@ -82,7 +82,6 @@ async function run() { //Most of the program is inside this run function so that
 			if (userid == null) {return;}
 			message.channel.send('they just got beaned');
 			userid.sendMessage('beaned', {files: ["./data/images/beaned.png"] });
-			
 		}
 	});
 }
