@@ -76,6 +76,35 @@ async function run() { //Most of the program is inside this run function so that
 			}
 		}
 
+		if(mCont.startsWith(prefix + 'beanify')) {
+			var slicedMessage = message.content.slice(16,message.content.length);
+			var beanified = "bean";
+			var half1 = "";
+			var half2 = "";
+
+			for(var i = 0; i < slicedMessage.length; i++) {
+				if(slicedMessage[i] == 'b') {
+					if(slicedMessage[i+1]=='e') {
+						if(slicedMessage[i+2] == 'a' || slicedMessage[i+2] == 'e') {
+							for(var j = 0; j < i+3; j++) {
+								half1 = half1 + slicedMessage[j];
+							}
+							for(var k = i+3; k < slicedMessage.length; k++) {
+								half2 = half2+slicedMessage[k];
+							}
+							if(slicedMessage[i+3] == 'n') {
+								slicedMessage = half1+half2;
+							}
+							else {
+								slicedMessage = half1+'n'+half2;
+							}
+						}
+					}
+				}
+			}
+			message.channel.send(slicedMessage);
+		}
+
 		if(mCont.startsWith(prefix + 'bean')) { //DM's the mentioned user with the bean'd image. 
 			var userid = message.mentions.users.first();
 			console.log(userid);
