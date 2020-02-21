@@ -1,4 +1,5 @@
 //Revision 2
+//BeanBot by MrFastZombie#2959
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const dotenv = require('dotenv').config();
