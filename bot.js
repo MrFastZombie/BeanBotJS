@@ -189,6 +189,10 @@ async function run() { //Most of the program is inside this run function so that
 
 		if(mCont.startsWith(prefix + 'bean')) { //DM's the mentioned user with the bean'd image. 
 			var userid = message.mentions.users.first();
+			if(userid.id == '348868707965075467') {
+				message.channel.send('this person does not understand the power of beans');
+				return;
+			}
 			console.log(userid);
 			if (userid == null) {return;}
 			message.channel.send('they just got beaned');
