@@ -23,7 +23,24 @@ async function readCSV(content) {
 
 async function run() { //Most of the program is inside this run function so that the CSV loads properly.
 	const flavors = await readCSV(fs.readFileSync('./data/beanflavors.csv'));
+	
+	//---------------------------------------------------------------------- FLAVOR TESTING ----------------------------------------------------------------------//
+	console.log("Testing flavors...");
+	var flav = [];
+	for(var tI = 0; tI<flavors.length-1; tI++) {
+		var flavorTestSeed = Math.floor(Math.random() * (flavors.length -1) + 1);
+		while(flav.includes(flavorTestSeed.toString()) == true) {
+			var flavorTestSeed = Math.floor(Math.random() * (flavors.length -1) + 1);
+		}
+		//console.log(flavors[flavorTestSeed].short+ ' ' +tI); //Uncomment this if you want each flavor printed to the console.
+		if(flav.includes(flavorTestSeed).toString() == true) {
+			console.log('WARING: ' + flavors[flavorTestSeed].short + ' was selected multiple times.');
+		}
+		flav.push(flavorTestSeed.toString());
+	}
+	flav.sort(function(a, b){return a-b});
 	console.log('Done loading flavors.');
+	//---------------------------------------------------------------------- FLAVOR TESTING ----------------------------------------------------------------------//
 
 	client.once('ready', () => { //Runs when the bot is connected and ready.
 		console.log('Ready!');
