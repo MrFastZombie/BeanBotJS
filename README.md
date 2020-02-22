@@ -6,7 +6,7 @@ A discord bot themed around beans. Yes, beans.
 2. Clone this repository.
 3. Navigate to the folder in a CMD and type `npm install`, it will install the dependencies.
 4. Create a .env file in the same director as bot.js and follow the .env guide below. Just name it .env
-5. Now you should be able to run the bot.
+5. Use `run.bat` or navigate to the folder with `bot.js` with CMD and type `node bot.js` to run.
 
 ## How to create a .env
 When you have created the .env (NOT AS A .TXT), use this as a template
