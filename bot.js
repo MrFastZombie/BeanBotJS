@@ -22,7 +22,7 @@ async function readCSV(content) {
 }
 
 async function run() { //Most of the program is inside this run function so that the CSV loads properly.
-	const flavors = await readCSV(fs.readFileSync('./beanflavors.csv'));
+	const flavors = await readCSV(fs.readFileSync('./data/beanflavors.csv'));
 	console.log('Done loading flavors.');
 
 	client.once('ready', () => { //Runs when the bot is connected and ready.
@@ -77,7 +77,8 @@ async function run() { //Most of the program is inside this run function so that
 			}
 		}
 
-		if(mCont.startsWith(prefix + 'beanify')) {
+//THE FOLLOWING COMMAND IS DISABLED BECAUSE IT BARELY EVEN WORKS YET
+/*		if(mCont.startsWith(prefix + 'beanify')) {
 			var slicedMessage = message.content.slice(16,message.content.length);
 			var beanified = "bean";
 			var half1 = "";
@@ -105,6 +106,7 @@ async function run() { //Most of the program is inside this run function so that
 			}
 			message.channel.send(slicedMessage);
 		}
+*/
 
 		if(mCont.startsWith(prefix + 'bean')) { //DM's the mentioned user with the bean'd image. 
 			var userid = message.mentions.users.first();
