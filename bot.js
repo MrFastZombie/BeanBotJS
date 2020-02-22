@@ -1,4 +1,4 @@
-//Revision 2
+//Revision 3
 //BeanBot by MrFastZombie#2959
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -76,6 +76,7 @@ async function run() { //Most of the program is inside this run function so that
 				.setTitle(flavors[flavorSeed].long + ' Beans')
 				.setDescription(flavors[flavorSeed].description)
 				.setImage(flavors[flavorSeed].image)
+				.setFooter('Flavor ' + flavorSeed + '/' + (flavors.length))
 			
 			message.channel.send(flavors[flavorSeed].long);
 			message.channel.send(flavorEmbed);
