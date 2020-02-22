@@ -36,6 +36,7 @@ async function run() { //Most of the program is inside this run function so that
 		if(flav.includes(flavorTestSeed).toString() == true) {
 			console.log('WARING: ' + flavors[flavorTestSeed].short + ' was selected multiple times.');
 		}
+		if(flavorTestSeed==0) {console.log('Zero is included.');}
 		flav.push(flavorTestSeed.toString());
 	}
 	flav.sort(function(a, b){return a-b});
@@ -76,10 +77,70 @@ async function run() { //Most of the program is inside this run function so that
 				.setTitle(flavors[flavorSeed].long + ' Beans')
 				.setDescription(flavors[flavorSeed].description)
 				.setImage(flavors[flavorSeed].image)
-				.setFooter('Flavor ' + flavorSeed + '/' + (flavors.length))
+				.setFooter('Flavor ' + flavorSeed + '/' + (flavors.length-1))
 			
 			message.channel.send(flavors[flavorSeed].long);
 			message.channel.send(flavorEmbed);
+		}
+
+		if (mCont.startsWith(prefix + 'flavor#')) {
+			var number = parseInt(mCont.slice(16, message.content.length));
+			const weedEmbed = new Discord.RichEmbed()
+				.setColor('#0099ff')
+				.setTitle('Weed-Flavored Beans')
+				.setDescription('snoop beann')
+				//.setImage()
+				.setFooter('Flavor ' + '420' + '/' + (flavors.length-1))
+
+			const hellEmbed = new Discord.RichEmbed()
+				.setColor('#0099ff')
+				.setTitle('Satanic Beans')
+				.setDescription('et satanas praesentem faba debet mori tecum non te mori mori')
+				.setImage('https://i.imgur.com/e2uGihK.png')
+				.setFooter('Flavor ' + '666' + '/' + (flavors.length-1))
+
+			const holyEmbed = new Discord.RichEmbed()
+				.setColor('#0099ff')
+				.setTitle('Holy Beans')
+				.setDescription('Accept beanism into your life, my child.')
+				//.setImage(flavors[number].image)
+				.setFooter('Flavor ' + '333' + '/' + (flavors.length-1))
+
+			if(number == 420) {
+				message.channel.send(weedEmbed);
+				return;
+			}
+	
+			if(number == 666) {
+				message.channel.send(hellEmbed);
+				return;
+			}
+			if(number == 333) {
+				message.channel.send(holyEmbed);
+				return;
+			}
+
+
+			if((number > flavors.length-1) || (number < 0)) {message.channel.send('invalid number you bean'); return;}
+
+			if(number != 'NaN')
+			{
+				message.channel.send(flavors[number].long);
+
+				const flavorEmbed = new Discord.RichEmbed()
+				.setColor('#0099ff')
+				.setTitle(flavors[number].long + ' Beans')
+				.setDescription(flavors[number].description)
+				.setImage(flavors[number].image)
+				.setFooter('Flavor ' + number + '/' + (flavors.length-1))
+
+				message.channel.send(flavorEmbed);
+			}
+			else {
+				message.channel.send('that input is beans');
+				return;
+			}
+			
 		}
 
 		if(mCont === prefix + 'kong') { //Enables or disables Kong mode.
