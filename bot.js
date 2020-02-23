@@ -209,6 +209,11 @@ async function run() { //Most of the program is inside this run function so that
 		if(mCont.startsWith(prefix + 'game')) { //Returns the first result of a Steam search.
 			var gameSearch = mCont.slice(13, mCont.length);
 			steam.find({search: gameSearch}, function (err, game) {
+				if(err != null) {
+					message.channel.send('An error has occured.');
+					message.channel.send(err.message);
+					return;
+				}
 				if(game.hasOwnProperty('price_overview') == false)
 				{
 					var gamePrice = '¯\\_(ツ)_/¯';
