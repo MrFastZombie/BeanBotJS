@@ -5,6 +5,7 @@ const client = new Discord.Client();
 const dotenv = require('dotenv').config();
 const fs = require('fs');
 const neatCsv = require('neat-csv');
+const steam = require('steam-searcher');
 const dtoken = process.env.DISCORD_TOKEN; //You need to define DISCORD_TOKEN in a .env file. This requires dotenv
 const prefix = "beanbot ";
 const status = [
@@ -203,6 +204,30 @@ async function run() { //Most of the program is inside this run function so that
 			if (userid == null) {return;}
 			message.channel.send('they just got beaned');
 			userid.sendMessage('beaned', {files: ["./data/images/beaned.png"] });
+		}
+
+		if(mCont.startsWith(prefix + 'game')) { //Returns the first result of a Steam search.
+			var gameSearch = mCont.slice(13, mCont.length);
+			steam.find({search: gameSearch}, function (err, game) {
+				if(game.hasOwnProperty('price_overview') == false)
+				{
+					var gamePrice = '¯\\_(ツ)_/¯';
+					var gameCurrency = '';
+				}
+				else {
+					gamePrice = game.price_overview.final_formatted;
+				}
+				const gameEmbed = new Discord.RichEmbed()
+					.setColor('#0099ff')
+					.setTitle(game.name)
+					.setDescription('https://store.steampowered.com/app/'+game.steam_appid)
+					.addField('Price', gamePrice + ' ' + gameCurrency, true)
+					.addField('Release Date', game.release_date.date)
+					.setImage(game.header_image)
+					.setFooter('Game info credit: Steam Parser by MAPReiff')
+				message.channel.send(gameEmbed);
+			});
+			
 		}
 	});
 }
