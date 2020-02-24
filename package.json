@@ -1,14 +1,14 @@
 {
   "name": "BeanBotJS",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "A discord bot themed around beans. Yes, beans.",
   "main": "bot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["Beans", "Bean", "Bot", "Discord"],
+  "author": "MrFastZombie",
+  "license": "MIT",
   "dependencies": {
     "csv-parser": "^2.3.2",
     "discord.js": "^11.5.1",
