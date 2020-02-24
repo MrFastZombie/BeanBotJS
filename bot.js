@@ -1,4 +1,3 @@
-//Revision 3
 //BeanBot by MrFastZombie#2959
 const Discord = require('discord.js');
 const client = new Discord.Client();
