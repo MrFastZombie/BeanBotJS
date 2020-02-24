@@ -16,6 +16,10 @@ const status = [
 ]
 var kong = 0;
 
+function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 async function readCSV(content) {
 	const result = await neatCsv(content);
 	return result;
@@ -56,7 +60,7 @@ async function run() { //Most of the program is inside this run function so that
 		}, 600000);
 	});
 	
-	client.on('message', message => {
+	client.on('message', async message => {
 		var mCont = message.content.toLowerCase(); //Stores the message as lowercase to make it not case-sensitive for the users.
 
 		if(message.author.id == '95717881165123584' && kong == 1) { //If kong mode is enabled, it will annoy one of my friends with a custom emote on his server.
@@ -207,6 +211,24 @@ async function run() { //Most of the program is inside this run function so that
 			if (userid == null) {return;}
 			message.channel.send('they just got beaned');
 			userid.sendMessage('beaned', {files: ["./data/images/beaned.png"] });
+		}
+
+		if(mCont.startsWith(prefix + 'vbean')) {
+			if(message.member.voiceChannel != undefined) {
+				const connection = await message.member.voiceChannel.join();
+				const dispatcher = connection.playFile('./data/beaned.mp3');
+				dispatcher.setVolume(1);
+				//setTimeout(function(), 5000);
+				await sleep(10000);
+				dispatcher.on('finish', () => {
+					
+				});
+				dispatcher.destroy();
+				message.guild.me.voiceChannel.leave();
+			}
+			else {
+				message.channel.send('You must be in the VC channel to do this.');
+			}
 		}
 
 		if(mCont.startsWith(prefix + 'game')) { //Returns the first result of a Steam search.
