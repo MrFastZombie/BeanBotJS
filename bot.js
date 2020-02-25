@@ -247,8 +247,13 @@ async function run() { //Most of the program is inside this run function so that
 				}
 				if(game.hasOwnProperty('price_overview') == false)
 				{
-					var gamePrice = '¯\\_(ツ)_/¯';
 					var gameCurrency = '';
+					if(game.is_free){
+						var gamePrice = 'Free!';
+					}
+					else {
+						gamePrice = '¯\\_(ツ)_/¯';
+					}
 				}
 				else {
 					gamePrice = game.price_overview.final_formatted;
