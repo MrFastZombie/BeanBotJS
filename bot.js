@@ -66,6 +66,11 @@ async function run() { //Most of the program is inside this run function so that
 		if(message.author.id == '95717881165123584' && kong == 1) { //If kong mode is enabled, it will annoy one of my friends with a custom emote on his server.
 			message.react('565923253323956224');
 		}
+
+		if(mCont.startsWith('fuck beans')) {
+			message.react('🖕');
+			return;
+		}
 	
 		if(mCont.startsWith(prefix) == false) return; //Does not process messages past this point if they do not have the prefix.
 		if(message.author.bot) return; //Ignores other bots
