@@ -97,7 +97,7 @@ async function run() { //Most of the program is inside this run function so that
 			const weedEmbed = new Discord.RichEmbed()
 				.setColor('#0099ff')
 				.setTitle('Weed-Flavored Beans')
-				.setDescription('snoop beann')
+				.setDescription('snoop bean')
 				//.setImage()
 				.setFooter('Flavor ' + '420' + '/' + (flavors.length-1))
 
@@ -240,7 +240,7 @@ async function run() { //Most of the program is inside this run function so that
 			var gameSearch = mCont.slice(13, mCont.length);
 			steam.find({search: gameSearch}, function (err, game) {
 				if(err != null) {
-					message.channel.send('An error has occured.');
+					message.channel.send('An error has occurred.');
 					message.channel.send(err.message);
 					return;
 				}
