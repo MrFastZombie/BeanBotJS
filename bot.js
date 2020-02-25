@@ -45,7 +45,7 @@ async function run() { //Most of the program is inside this run function so that
 	}
 	flav.sort(function(a, b){return a-b});
 	console.log('Done loading flavors.');
-	//---------------------------------------------------------------------- FLAVOR TESTING ----------------------------------------------------------------------//
+	//---------------------------------------------------------------------- END OF FLAVOR TESTING ----------------------------------------------------------------------//
 
 	client.once('ready', () => { //Runs when the bot is connected and ready.
 		console.log('Ready!');
@@ -60,6 +60,7 @@ async function run() { //Most of the program is inside this run function so that
 		}, 600000);
 	});
 	
+	//-------------------------------------------------------------------------------------------CHAT COMMANDS-------------------------------------------------------------------------------------------//
 	client.on('message', async message => {
 		var mCont = message.content.toLowerCase(); //Stores the message as lowercase to make it not case-sensitive for the users.
 
@@ -77,7 +78,7 @@ async function run() { //Most of the program is inside this run function so that
 	
 		if(mCont === prefix + 'ping') { //This was basically just a test command.
 			message.channel.send('pong');
-		}
+		} //End of ping
 
 		if(mCont === prefix + 'flavor') { //Picks a random flavor from a CSV file and replies with an embed with the flavor. Some have images and they have descriptions.
 			var flavorSeed = Math.floor(Math.random() * (flavors.length -1) + 1);
@@ -90,7 +91,7 @@ async function run() { //Most of the program is inside this run function so that
 			
 			message.channel.send(flavors[flavorSeed].long);
 			message.channel.send(flavorEmbed);
-		}
+		} //End of flavor
 
 		if (mCont.startsWith(prefix + 'flavor#')) {
 			var number = parseInt(mCont.slice(16, message.content.length));
@@ -150,7 +151,7 @@ async function run() { //Most of the program is inside this run function so that
 				return;
 			}
 			
-		}
+		} //End of flaovr#
 
 		if(mCont === prefix + 'kong') { //Enables or disables Kong mode.
 			if(kong === 0) {
@@ -163,10 +164,10 @@ async function run() { //Most of the program is inside this run function so that
 				message.channel.send('Kong-mode disabled.');
 				message.channel.send(':(');
 			}
-		}
+		} //End of kong
 
-//THE FOLLOWING COMMAND IS DISABLED BECAUSE IT BARELY EVEN WORKS YET
-/*		if(mCont.startsWith(prefix + 'beanify')) {
+	//THE FOLLOWING COMMAND IS DISABLED BECAUSE IT BARELY EVEN WORKS YET
+	/*		if(mCont.startsWith(prefix + 'beanify')) {
 			var slicedMessage = message.content.slice(16,message.content.length);
 			var beanified = "bean";
 			var half1 = "";
@@ -194,7 +195,7 @@ async function run() { //Most of the program is inside this run function so that
 			}
 			message.channel.send(slicedMessage);
 		}
-*/
+	*/
 
 		if(mCont.startsWith(prefix + 'bean')) { //DM's the mentioned user with the bean'd image. 
 			var userid = message.mentions.users.first();
@@ -216,7 +217,7 @@ async function run() { //Most of the program is inside this run function so that
 			if (userid == null) {return;}
 			message.channel.send('they just got beaned');
 			userid.sendMessage('beaned', {files: ["./data/images/beaned.png"] });
-		}
+		} //End of bean
 
 		if(mCont.startsWith(prefix + 'vbean')) {
 			if(message.member.voiceChannel != undefined) {
@@ -234,7 +235,7 @@ async function run() { //Most of the program is inside this run function so that
 			else {
 				message.channel.send('You must be in the VC channel to do this.');
 			}
-		}
+		} //End of vbean
 
 		if(mCont.startsWith(prefix + 'game')) { //Returns the first result of a Steam search.
 			var gameSearch = mCont.slice(13, mCont.length);
@@ -263,9 +264,10 @@ async function run() { //Most of the program is inside this run function so that
 				message.channel.send(gameEmbed);
 			});
 			
-		}
-	});
-}
+		} //End of game command
+	}); //End of on message
+} //End of run()
+//------------------------------------------------------------------------------------------- END OF CHAT COMMANDS-------------------------------------------------------------------------------------------//
 run();
 
 client.login(dtoken);
