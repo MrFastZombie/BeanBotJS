@@ -151,7 +151,7 @@ async function run() { //Most of the program is inside this run function so that
 				return;
 			}
 			
-		} //End of flaovr#
+		} //End of flavor#
 
 		if(mCont === prefix + 'kong') { //Enables or disables Kong mode.
 			if(kong === 0) {
