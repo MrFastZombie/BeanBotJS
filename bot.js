@@ -14,6 +14,34 @@ const status = [
 	"spreading beanism",
 	"beans"
 ]
+const lEmotes = [
+	"683575345294737410", //A
+	"683567369007792236", //B
+	"683575345688870922", //C
+	"683575345789927435", //D
+	"683575346724995083", //E
+	"683575346674794498", //F
+	"683575347043762212", //G
+	"683575346968264710", //H
+	"683575346930384916", //I
+	"683575346884509713", //J
+	"683575346918064136", //K
+	"683575346771132448", //L
+	"683575346716475485", //M
+	"683575346628395029", //N
+	"683575346867470348", //O
+	"683575347014664222", //P
+	"683575346376736794", //Q
+	"683575346934972436", //R
+	"683575346645303320", //S
+	"683575346984910892", //T
+	"683575346603491361", //U
+	"683575346897223697", //V
+	"683575346842435605", //W
+	"683575346934841344", //X
+	"683575346850824192", //Y
+	"683575347031048224" //Z
+]
 var kong = 0;
 
 function sleep(ms) {
@@ -47,6 +75,8 @@ async function run() { //Most of the program is inside this run function so that
 	console.log('Done loading flavors.');
 	//---------------------------------------------------------------------- END OF FLAVOR TESTING ----------------------------------------------------------------------//
 
+	const food = await readCSV(fs.readFileSync('./data/food.csv'));
+	
 	client.once('ready', () => { //Runs when the bot is connected and ready.
 		console.log('Ready!');
 		client.user.setActivity('beans', {type: "PLAYING"});
@@ -257,6 +287,7 @@ async function run() { //Most of the program is inside this run function so that
 				}
 				else {
 					gamePrice = game.price_overview.final_formatted;
+					var gameCurrency = game.price_overview.currency;
 				}
 				const gameEmbed = new Discord.RichEmbed()
 					.setColor('#0099ff')
@@ -270,6 +301,46 @@ async function run() { //Most of the program is inside this run function so that
 			});
 			
 		} //End of game command
+		
+		if(mCont.startsWith(prefix + 'cbt')) {
+			message.channel.send('', {files: ["./data/images/c.gif", "./data/images/b.gif", "./data/images/t.gif"] });
+		}
+
+		if(mCont.startsWith(prefix + 'dance')) {
+			var dInput = mCont.slice(14, mCont.length);
+			var output = '';
+			for(var i = 0; i < dInput.length; i++) {
+				var charCode = dInput.charCodeAt(i) - 97;
+				if((charCode > 26 || charCode < 0) && charCode != -65) {
+					output = output + '';
+				}
+				else if(charCode == -65) {
+					output = output + '          ';
+				}
+				else {
+					output = output + client.emojis.get(lEmotes[charCode]).toString() + ' ';
+				}
+
+			}
+			message.channel.send(output);
+		}
+
+		if(mCont.startsWith(prefix + 'say')) {
+			var sInput = mCont.slice(12, mCont.length);
+			message.channel.send(sInput);
+			message.delete();
+		}
+
+		if(mCont.startsWith(prefix+'feed me')) {
+			var foodSel = [];
+			for(var i = 0; i < 3; i++) {
+				var foodSeed = Math.floor(Math.random() * (food.length -1) + 1);
+				foodSel.push(food[foodSeed]);
+			}
+			message.channel.send(foodSel[0].jscode);
+			message.channel.send('I present to you ' + foodSel[0].name + ' with ' + foodSel[1].name + ' and ' + foodSel[2].name);
+
+		}
 	}); //End of on message
 } //End of run()
 //------------------------------------------------------------------------------------------- END OF CHAT COMMANDS-------------------------------------------------------------------------------------------//
