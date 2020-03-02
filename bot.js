@@ -1,4 +1,5 @@
 //BeanBot by MrFastZombie#2959
+//CAUTION: THE CODE BELOW IS SPAGHETTI
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const dotenv = require('dotenv').config();
