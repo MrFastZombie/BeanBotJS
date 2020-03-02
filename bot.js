@@ -337,7 +337,7 @@ async function run() { //Most of the program is inside this run function so that
 				var foodSeed = Math.floor(Math.random() * (food.length -1) + 1);
 				foodSel.push(food[foodSeed]);
 			}
-			message.channel.send(foodSel[0].jscode);
+			message.channel.send(String.fromCodePoint(foodSel[0].jscode) + String.fromCodePoint(foodSel[1].jscode) + String.fromCodePoint(foodSel[2].jscode));
 			message.channel.send('I present to you ' + foodSel[0].name + ' with ' + foodSel[1].name + ' and ' + foodSel[2].name);
 
 		}
