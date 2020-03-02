@@ -15,7 +15,7 @@ const status = [
 	"spreading beanism",
 	"beans"
 ]
-const lEmotes = [
+const lEmotes = [ //EmoteIDs for all of the letters of the alphabet. Used for the dance command.
 	"683575345294737410", //A
 	"683567369007792236", //B
 	"683575345688870922", //C
@@ -43,18 +43,18 @@ const lEmotes = [
 	"683575346850824192", //Y
 	"683575347031048224" //Z
 ]
-var kong = 0;
+var kong = 0; //Used for kong mode.
 
 function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function readCSV(content) {
+async function readCSV(content) { //Used to read CSV files.
 	const result = await neatCsv(content);
 	return result;
 }
 
-async function run() { //Most of the program is inside this run function so that the CSV loads properly.
+async function run() { //Most of the program is inside this run function so that the CSVs load properly.
 	const flavors = await readCSV(fs.readFileSync('./data/beanflavors.csv'));
 	
 	//---------------------------------------------------------------------- FLAVOR TESTING ----------------------------------------------------------------------//
@@ -76,7 +76,7 @@ async function run() { //Most of the program is inside this run function so that
 	console.log('Done loading flavors.');
 	//---------------------------------------------------------------------- END OF FLAVOR TESTING ----------------------------------------------------------------------//
 
-	const food = await readCSV(fs.readFileSync('./data/food.csv'));
+	const food = await readCSV(fs.readFileSync('./data/food.csv')); //Loads all of the food emojis for the feed command.
 	
 	client.once('ready', () => { //Runs when the bot is connected and ready.
 		console.log('Ready!');
@@ -124,7 +124,7 @@ async function run() { //Most of the program is inside this run function so that
 			message.channel.send(flavorEmbed);
 		} //End of flavor
 
-		if (mCont.startsWith(prefix + 'flavor#')) {
+		if (mCont.startsWith(prefix + 'flavor#')) { //Allows the user to pick a specific flavor by its number. 
 			var number = parseInt(mCont.slice(16, message.content.length));
 			const weedEmbed = new Discord.RichEmbed()
 				.setColor('#0099ff')
@@ -250,7 +250,7 @@ async function run() { //Most of the program is inside this run function so that
 			userid.sendMessage('beaned', {files: ["./data/images/beaned.png"] });
 		} //End of bean
 
-		if(mCont.startsWith(prefix + 'vbean')) {
+		if(mCont.startsWith(prefix + 'vbean')) { //Plays the beaned meme audio in the VC channel the message author is in.
 			if(message.member.voiceChannel != undefined) {
 				const connection = await message.member.voiceChannel.join();
 				const dispatcher = connection.playFile('./data/beaned.mp3');
@@ -303,11 +303,11 @@ async function run() { //Most of the program is inside this run function so that
 			
 		} //End of game command
 		
-		if(mCont.startsWith(prefix + 'cbt')) {
+		if(mCont.startsWith(prefix + 'cbt')) { //Spells out CBT with dancing letter gifs.
 			message.channel.send('', {files: ["./data/images/c.gif", "./data/images/b.gif", "./data/images/t.gif"] });
-		}
+		} //End of CBT
 
-		if(mCont.startsWith(prefix + 'dance')) {
+		if(mCont.startsWith(prefix + 'dance')) { //Sends the text after "dance" back but with dancing letter gif emotes
 			var dInput = mCont.slice(14, mCont.length);
 			var output = '';
 			for(var i = 0; i < dInput.length; i++) {
@@ -324,15 +324,15 @@ async function run() { //Most of the program is inside this run function so that
 
 			}
 			message.channel.send(output);
-		}
+		} //end of gif
 
-		if(mCont.startsWith(prefix + 'say')) {
+		if(mCont.startsWith(prefix + 'say')) { //Allows the user to make beanbot say something.
 			var sInput = mCont.slice(12, mCont.length);
 			message.channel.send(sInput);
 			message.delete();
-		}
+		} //End of say
 
-		if(mCont.startsWith(prefix+'feed me')) {
+		if(mCont.startsWith(prefix+'feed me')) { //Messages the user's channel with three different food emojis and presents them to the author.
 			var foodSel = [];
 			for(var i = 0; i < 3; i++) {
 				var foodSeed = Math.floor(Math.random() * (food.length -1) + 1);
@@ -341,7 +341,7 @@ async function run() { //Most of the program is inside this run function so that
 			message.channel.send(String.fromCodePoint(foodSel[0].jscode) + String.fromCodePoint(foodSel[1].jscode) + String.fromCodePoint(foodSel[2].jscode));
 			message.channel.send('I present to you ' + foodSel[0].name + ' with ' + foodSel[1].name + ' and ' + foodSel[2].name);
 
-		}
+		} //end of feed me
 	}); //End of on message
 } //End of run()
 //------------------------------------------------------------------------------------------- END OF CHAT COMMANDS-------------------------------------------------------------------------------------------//
