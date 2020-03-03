@@ -323,7 +323,40 @@ async function run() { //Most of the program is inside this run function so that
 				}
 
 			}
+
+			/*
+			if output is more than 2000
+				fit as many emotes in the slot as you can in a secondary output as long as it ends in spaces
+					(in other words, keep words together)
+				send that output
+				repeat until output is empty
+			
+			---------------IGNORE THIS CODE IM GONNA DO IT IN A BETTER WAY LATER---------------
+			if(output.length>=2000) {
+				var soutput = '';
+				var soutput2 = '';
+				var soutput3 = '';
+				while(output.length != 0) {
+					while(soutput.length<2000){
+						var i = 0;
+						while(output[i] != ' ') {
+							soutput2 = soutput2+output[i];
+							
+						}
+						soutput3 = soutput+soutput2+'           ';
+						if(soutput3.length < 2000) {
+							soutput = soutput+soutput3;
+						}
+					}
+				}
+			}
+			*/
+			if(output.length>2000) {
+				message.channel.send('that is too long (for now) ;)');
+			}
+			else {
 			message.channel.send(output);
+			}
 		} //end of gif
 
 		if(mCont.startsWith(prefix + 'say')) { //Allows the user to make beanbot say something.
