@@ -15,5 +15,8 @@ When you have created the .env (NOT AS A .TXT), use this as a template
 ```
 # .env
 DISCORD_TOKEN=YOURTOKENHERE
+OWLBOT_TOKEN=YOURTOKENHERE
 ```    
 [Follow this guide to get your token.](https://www.writebots.com/discord-bot-token/)
+
+[Go here to get an OwlBot token](https://owlbot.info/)
