@@ -19,9 +19,11 @@
     "csv-parser": "^2.3.2",
     "discord.js": "^11.5.1",
     "dotenv": "^8.2.0",
+    "en-dictionary": "^1.2.4",
     "ffmpeg-static": "^4.0.1",
     "neat-csv": "^5.2.0",
     "opusscript": "0.0.7",
+    "owlbot-js": "^2.0.0",
     "steam-searcher": "^1.0.3"
   }
 }
