@@ -8,6 +8,7 @@ const client = new CommandoClient({
     commandPrefix: 'beanbot ',
     owner: '197406355026345994',
     invite: '',
+    disableEveryone: true
 });
 
 client.registry
