@@ -6,7 +6,9 @@ const dotenv = require('dotenv').config();
 const fs = require('fs');
 const neatCsv = require('neat-csv');
 const steam = require('steam-searcher');
+const Owlbot = require('owlbot-js');
 const dtoken = process.env.DISCORD_TOKEN; //You need to define DISCORD_TOKEN in a .env file. This requires dotenv
+const Owlbotclient = Owlbot(process.env.OWLBOT_TOKEN);
 const prefix = "beanbot ";
 const status = [
 	"bean snorting simulator",
@@ -375,6 +377,25 @@ async function run() { //Most of the program is inside this run function so that
 			message.channel.send('I present to you ' + foodSel[0].name + ' with ' + foodSel[1].name + ' and ' + foodSel[2].name);
 
 		} //end of feed me
+		if(mCont.startsWith(prefix+'dict')) {
+			var word = mCont.slice(13, mCont.length);
+			var dictResult = Owlbotclient.define(word).then(function(result) {
+				if(!(typeof result === 'object')) {
+					message.channel.send('you have broken me you fool');
+				}
+				else{
+						const owlEmbed = new Discord.RichEmbed()
+						.setColor('#0099ff')
+						.setTitle(word)
+						.setDescription(result.definitions[0].definition)
+						.addField('Word type', result.definitions[0].type)
+						.setImage(result.definitions[0].image_url)
+						.setFooter('Dictionary services courtesy of OwlBot API')
+					message.channel.send(owlEmbed);
+				}
+				
+			});
+		}//end of dict
 	}); //End of on message
 } //End of run()
 //------------------------------------------------------------------------------------------- END OF CHAT COMMANDS-------------------------------------------------------------------------------------------//
