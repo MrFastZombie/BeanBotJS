@@ -20,16 +20,16 @@ module.exports = class FlavCommand extends Command {
     constructor(client) { 
         super(client, {
             name: 'flavor',
-            group: 'fun',
+            group: 'Fun',
             memberName: 'flavor',
             description: 'Replies with an embed for a random bean flavor from beanflavors.csv',
             examples: ['beanbot flavor']
         });
     }
     run(message) {
-        async function main() {
+        async function main() { //The code has to be in an asynchronous function in order for the array to be defined.
             /*-----------------------------------------------------FLAVOR TESTING-----------------------------------------------------*/
-            var flavors = await loadFlav();
+            var flavors = await loadFlav(); //Loads the flavors from the CSV to the flavors variable as an array.
             //console.log("Testing flavors...");
             var flav = [];
             for(var tI = 0; tI<flavors.length-1; tI++) {
@@ -48,8 +48,8 @@ module.exports = class FlavCommand extends Command {
             //console.log('Done loading flavors.');
             /*-----------------------------------------------------END OF FLAVOR TESTING-----------------------------------------------------*/
 
-            var flavorSeed = Math.floor(Math.random() * (flavors.length -1) + 1);
-                const flavorEmbed = new RichEmbed()
+            var flavorSeed = Math.floor(Math.random() * (flavors.length -1) + 1); //First, generate a random number within the range of the flavors.
+                const flavorEmbed = new RichEmbed() //Then define an embed, using data from the selected flavor (flavorSeed).
                     .setColor('#0099ff')
                     .setTitle(flavors[flavorSeed].long + ' Beans')
                     .setDescription(flavors[flavorSeed].description)
@@ -57,7 +57,7 @@ module.exports = class FlavCommand extends Command {
                     .setFooter('Flavor ' + flavorSeed + '/' + (flavors.length-1))
                 
                 //message.channel.send(flavors[flavorSeed].long);
-                return message.embed(flavorEmbed);
+                return message.embed(flavorEmbed); //Finally, send the embed to the chat in the channel that it was requested.
         }
         main();
         
