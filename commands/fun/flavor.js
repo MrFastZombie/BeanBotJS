@@ -20,7 +20,7 @@ module.exports = class FlavCommand extends Command {
     constructor(client) { 
         super(client, {
             name: 'flavor',
-            group: 'Fun',
+            group: 'fun',
             memberName: 'flavor',
             description: 'Replies with an embed for a random bean flavor from beanflavors.csv',
             examples: ['beanbot flavor']

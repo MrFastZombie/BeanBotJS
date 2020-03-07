@@ -8,14 +8,15 @@ const client = new CommandoClient({
     commandPrefix: 'beanbot ',
     owner: '197406355026345994',
     invite: '',
-    disableEveryone: true
+    disableEveryone: true,
+    unknownCommandResponse: false,
 });
 
 client.registry
     .registerDefaultTypes()
     .registerGroups([
-        ['Fun', 'fun commands'],
-        ['Useful', 'useful commands'],
+        ['fun', 'fun commands'],
+        ['useful', 'useful commands'],
     ])
     .registerDefaultGroups()
     .registerDefaultCommands()
