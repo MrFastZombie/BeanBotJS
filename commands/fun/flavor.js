@@ -30,7 +30,7 @@ module.exports = class FlavCommand extends Command {
         async function main() {
             /*-----------------------------------------------------FLAVOR TESTING-----------------------------------------------------*/
             var flavors = await loadFlav();
-            console.log("Testing flavors...");
+            //console.log("Testing flavors...");
             var flav = [];
             for(var tI = 0; tI<flavors.length-1; tI++) {
                 var flavorTestSeed = Math.floor(Math.random() * (flavors.length -1) + 1);
@@ -39,13 +39,13 @@ module.exports = class FlavCommand extends Command {
                 }
                 //console.log(flavors[flavorTestSeed].short+ ' ' +tI); //Uncomment this if you want each flavor printed to the console.
                 if(flav.includes(flavorTestSeed).toString() == true) {
-                    console.log('WARING: ' + flavors[flavorTestSeed].short + ' was selected multiple times.');
+                    console.log('WARNING: ' + flavors[flavorTestSeed].short + ' was selected multiple times.');
                 }
                 if(flavorTestSeed==0) {console.log('Zero is included.');}
                 flav.push(flavorTestSeed.toString());
             }
             flav.sort(function(a, b){return a-b});
-            console.log('Done loading flavors.');
+            //console.log('Done loading flavors.');
             /*-----------------------------------------------------END OF FLAVOR TESTING-----------------------------------------------------*/
 
             var flavorSeed = Math.floor(Math.random() * (flavors.length -1) + 1);
