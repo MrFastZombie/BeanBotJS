@@ -21,6 +21,7 @@ module.exports = class BeanCommand extends Command {
     run(message, { recipient }) {
         async function main() {
             const fileDir = path.join(__dirname, '../../data/images/beaned.png');
+            const unoDir = path.join(__dirname, '../../data/images/uno.png');
             if(recipient.id == undefined) {
                 return message.say('invalid input you bean')
             }
@@ -29,9 +30,10 @@ module.exports = class BeanCommand extends Command {
             }
             else if (recipient.id == '674022563621634069') {
                 message.author.send('beaned', {files: [fileDir] });
-                return message.say('I AM THE ONE WHO BEANS');
+                return message.say('I AM THE ONE WHO BEANS', {files: [unoDir] });
             }
             else {
+                message.say('they just got beaned');
                 return recipient.send('beaned', {files: [fileDir] });
             }
         }
