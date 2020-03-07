@@ -20,7 +20,7 @@ client.registry
     ])
     .registerDefaultGroups()
     .registerDefaultCommands()
-    .registerCommandsIn(path.join(__dirname, 'commands'));
+    .registerCommandsIn(path.join(__dirname, 'commands')); //registers commands in BeanBotJS/commands
 
 
 client.once('ready', () => {
