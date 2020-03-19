@@ -22,6 +22,7 @@
     "discord.js-commando": "^0.10.0",
     "dotenv": "^8.2.0",
     "en-dictionary": "^1.2.4",
+    "enmap": "^5.2.4",
     "ffmpeg-static": "^4.0.1",
     "neat-csv": "^5.2.0",
     "opusscript": "0.0.7",
