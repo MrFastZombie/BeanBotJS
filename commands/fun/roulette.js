@@ -31,7 +31,7 @@ module.exports = class RouletteCommand extends Command {
                     return;
                 }
                     else { //If the first chamber was not loaded, congratulate the player
-                        message.say('You survived this round');
+                        message.say('You survived round ' + bullet + '/6');
                         bullet++;
                         return;
                     }
@@ -44,7 +44,7 @@ module.exports = class RouletteCommand extends Command {
                     return;
                 } 
                     else { //If not, congratulate and continue.
-                        message.say('you have survived this round');
+                        message.say('You survived round ' + bullet + '/6');
                         bullet++;
                         return;
                     }
