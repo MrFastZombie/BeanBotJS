@@ -29,6 +29,7 @@ module.exports = class FlavCommand extends Command {
     run(message) {
         async function main() { //The code has to be in an asynchronous function in order for the array to be defined.
             /*-----------------------------------------------------FLAVOR TESTING-----------------------------------------------------*/
+            /*                                                 WELCOME TO FLAVOR TOWN                                                 */
             var flavors = await loadFlav(); //Loads the flavors from the CSV to the flavors variable as an array.
             //console.log("Testing flavors...");
             var flav = [];
