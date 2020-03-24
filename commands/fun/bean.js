@@ -8,17 +8,23 @@ module.exports = class BeanCommand extends Command {
             group: 'fun',
             memberName: 'bean',
             description: 'Sends a bean meme to the tagged user.',
-            examples: ['beanbot bean @user'],
+            examples: ['beanbot bean @user','beanbot bean @user message', 'beanbot bean @MrFastZombie u smelly'],
             args: [
                 {
                     key: 'recipient',
                     prompt: 'tag the user who you wish to bean my dude',
                     type: 'user'
+                },
+                {
+                    key: 'umessage',
+                    prompt: 'type a message to send to the user',
+                    type: 'string',
+                    default: ''
                 }
             ]
         });
     }
-    run(message, { recipient }) {
+    run(message, { recipient, umessage }) {
         async function main() {
             const fileDir = path.join(__dirname, '../../data/images/beaned.png');
             const unoDir = path.join(__dirname, '../../data/images/uno.png');
@@ -34,6 +40,9 @@ module.exports = class BeanCommand extends Command {
             }
             else {
                 message.say('they just got beaned');
+                if(umessage != '') {
+                    recipient.send(umessage);
+                }
                 return recipient.send('beaned', {files: [fileDir] });
             }
         }
