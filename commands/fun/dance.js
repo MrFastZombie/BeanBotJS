@@ -50,8 +50,9 @@ module.exports = class DanceCommand extends Command {
     run(message, { dinput }) {
         //async function main() {
             var output = '';
-            for(var i = 0; i < dinput.length; i++) {
-				var charCode = dinput.charCodeAt(i) - 97;
+            var ddinput = dinput.toLowerCase();
+            for(var i = 0; i < ddinput.length; i++) {
+				var charCode = ddinput.charCodeAt(i) - 97;
 				if((charCode > 26 || charCode < 0) && charCode != -65) {
 					output = output + '';
 				}
