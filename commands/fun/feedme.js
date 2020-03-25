@@ -31,13 +31,25 @@ module.exports = class FeedCommand extends Command {
             const foodir = path.join(__dirname, '../../data/food.csv'); //Have to use path.join for some reason.
             const food = await readCSV(fs.readFileSync(foodir));
             var foodSel = []; //Create an array to store the selected food items.
+            var recipient = '';
 
-			for(var i = 0; i < 3; i++) {
+            //The if-else block below checks who's recieving the food so that Beanbot may use the proper nouns for each case.
+            if(me.toLowerCase() == 'me') {
+                recipient = 'you';
+            }
+            else if(me.toLowerCase() == 'you') {
+                recipient = 'me';
+            }
+            else {
+                recipient = me;
+            }
+
+			for(var i = 0; i < 3; i++) { //Selects three random food emojis from the CSV.
 				var foodSeed = Math.floor(Math.random() * (food.length -1) + 1);
 				foodSel.push(food[foodSeed]);
 			}
 			message.say(String.fromCodePoint(foodSel[0].jscode) + String.fromCodePoint(foodSel[1].jscode) + String.fromCodePoint(foodSel[2].jscode));
-			return message.say('I present to you ' + foodSel[0].name + ' with ' + foodSel[1].name + ' and ' + foodSel[2].name);
+			return message.say('I present to ' + recipient + ' ' +foodSel[0].name + ' with ' + foodSel[1].name + ' and ' + foodSel[2].name);
        }
        main();
        return;
