@@ -74,6 +74,10 @@ client.on('message', async message => { //For commands that either do not work w
         }
     }
     /*--------------------------------------------------END OF VBEAN--------------------------------------------------*/
+    if(mCont.startsWith('fuck beans')) {
+        message.react('🖕');
+        return;
+    }
 })
 
 client.login(dtoken);
