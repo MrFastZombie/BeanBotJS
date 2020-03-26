@@ -4,6 +4,13 @@ const dotenv = require('dotenv').config();
 const dtoken = process.env.DISCORD_TOKEN;
 const prefix = "beanbot ";
 var vbeaning = 0;
+const status = [
+	"bean snorting simulator",
+	"beansusSummon.exe",
+	"putting beans in places where beans should not be",
+	"spreading beanism",
+	"beans"
+]
 
 function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
@@ -31,6 +38,15 @@ client.registry
 
 client.once('ready', () => {
     console.log('Logged in')
+    client.user.setActivity('beans', {type: "PLAYING"});
+});
+
+client.on('ready', () => { //This block is for changing the status on an interval. Should still work fine if more are added to const status above.
+    setInterval(() => {
+        const index = Math.floor(Math.random() * (status.length -1) + 1);
+        client.user.setActivity(status[index], {type: "PLAYING"});
+        console.log('set new status');
+    }, 600000);
 });
 
 client.on('message', async message => { //For commands that either do not work well with commando or would be simpler to put here.
