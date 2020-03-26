@@ -1,18 +1,32 @@
 {
-  "name": "BeanBotJS",
-  "version": "1.0.0",
+  "name": "beanbotjs",
+  "version": "1.0.3",
   "description": "A discord bot themed around beans. Yes, beans.",
   "main": "bot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ."
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "Beans",
+    "Bean",
+    "Bot",
+    "Discord"
+  ],
+  "author": "MrFastZombie",
+  "license": "MIT",
   "dependencies": {
+    "@discordjs/opus": "^0.1.0",
     "csv-parser": "^2.3.2",
-    "discord.js": "^11.5.1",
+    "discord.js": "^11.6.1",
+    "discord.js-commando": "^0.10.0",
     "dotenv": "^8.2.0",
-    "neat-csv": "^5.2.0"
+    "en-dictionary": "^1.2.4",
+    "enmap": "^5.2.4",
+    "ffmpeg-static": "^4.0.1",
+    "neat-csv": "^5.2.0",
+    "opusscript": "0.0.7",
+    "owlbot-js": "^2.0.0",
+    "steam-searcher": "^1.0.3"
   }
 }

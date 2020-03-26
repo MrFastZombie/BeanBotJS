@@ -1,0 +1,47 @@
+THIS COMMAND WOULD NOT WORK SO I HAVE DISABLED ITS FILE AND PUT IT IN THE MAIN FILE
+
+const { Command } = require('discord.js-commando');
+const DiscordJS = require('discord.js')
+const fs = require('fs');
+const path = require('path');
+const ffmpeg = require('ffmpeg-static');
+const opusscript = require('@discordjs/opus');
+
+function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+module.exports = class VBeanCommand extends Command {
+    constructor(client) { 
+        super(client, {
+            name: 'vbean',
+            group: 'fun',
+            memberName: 'vbean',
+            description: 'Plays a bean voice clip in the message authors current voice chat room.',
+            examples: ['beanbot vbean']
+        });
+    }
+    run(message) {
+        async function main() {
+            const sfile = path.join(__dirname, '../../data/beaned.mp3');
+            if(message.member.voiceChannel != undefined) {
+                const connection = await message.member.voiceChannel.join();
+                const dispatcher = connection.playFile(sfile);
+                dispatcher.setVolume(1);
+                await sleep(10000);
+                dispatcher.on('finish', () => {
+                    
+                });
+                dispatcher.destroy();
+                message.guild.me.voiceChannel.leave();
+                return;
+            }
+            else {
+                return message.say('you must be in a VC channel to summon the big bean');
+            }
+        }
+        main();
+        
+
+    }
+};

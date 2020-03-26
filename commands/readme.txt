@@ -1,0 +1,1 @@
+This is where all the command files will go once I I covnert beanbot to use Discord.js' commando.
