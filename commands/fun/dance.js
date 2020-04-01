@@ -67,6 +67,9 @@ module.exports = class DanceCommand extends Command {
             if(output.length>2000) {
 				return message.say('that is too long (for now) ;)');
 			}
+			else if(output == '') {
+				return message.say('i do not know that dance :(');
+			}
 			else {
 			    return message.say(output);
 			}
