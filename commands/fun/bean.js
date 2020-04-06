@@ -39,11 +39,11 @@ module.exports = class BeanCommand extends Command {
                 return message.say('I AM THE ONE WHO BEANS', {files: [unoDir] });
             }
             else {
-                message.say('they just got beaned');
                 if(umessage != '') {
                     recipient.send(umessage);
                 }
-                return recipient.send('beaned', {files: [fileDir] });
+                recipient.send('beaned', {files: [fileDir] });
+                return message.say('they just got beaned');
             }
         }
         main();
