@@ -34,7 +34,7 @@ module.exports = class FeedCommand extends Command {
             var recipient = '';
 
             //The if-else block below checks who's recieving the food so that Beanbot may use the proper nouns for each case.
-            if(me.toLowerCase() == 'me') {
+            if(me.toLowerCase() == 'me' || me.toLowerCase() == 'i') {
                 recipient = 'you';
             }
             else if(me.toLowerCase() == 'you') {
