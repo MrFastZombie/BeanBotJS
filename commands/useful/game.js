@@ -46,8 +46,10 @@ module.exports = class GameCommand extends Command {
 					.setColor('#0099ff')
 					.setTitle(game.name)
 					.setDescription('https://store.steampowered.com/app/'+game.steam_appid)
-					.addField('Price', gamePrice + ' ' + gameCurrency, true)
+					.addField('Price', gamePrice + ' ' + gameCurrency)
 					.addField('Release Date', game.release_date.date)
+					.addField('Publisher', game.publishers[0], true)
+					.addField('Developer', game.developers[0], true)
 					.setImage(game.header_image)
 					.setFooter('Game info credit: Steam Parser by MAPReiff')
 				message.channel.send(gameEmbed);
