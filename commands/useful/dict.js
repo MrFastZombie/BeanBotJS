@@ -33,6 +33,7 @@ module.exports = class DictCommand extends Command {
 						.setTitle(wsearch)
 						.setDescription(result.definitions[0].definition)
 						.addField('Word type', result.definitions[0].type)
+						.addField('Pronunciation', result.pronunciation)
 						.setImage(result.definitions[0].image_url)
 						.setFooter('Dictionary services courtesy of OwlBot API')
 					message.say(owlEmbed);
