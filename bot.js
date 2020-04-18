@@ -56,7 +56,7 @@ client.on('message', async message => { //For commands that either do not work w
     if(mCont.startsWith(prefix + 'vbean')) { //Plays the beaned meme audio in the VC channel the message author is in.
         if(message.member.voiceChannel != undefined && vbeaning == 0) {
             const connection = await message.member.voiceChannel.join();
-            const dispatcher = connection.play('./data/beaned.mp3');
+            const dispatcher = connection.playFile('./data/beaned.mp3');
             vbeaning = 1;
             dispatcher.setVolume(1);
             //setTimeout(function(), 5000);
