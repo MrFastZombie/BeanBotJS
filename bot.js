@@ -1,9 +1,12 @@
 const {CommandoClient} = require('discord.js-commando');
 const path = require('path');
+const WitSpeech = require('node-witai-speech');
 const dotenv = require('dotenv').config();
 const dtoken = process.env.DISCORD_TOKEN;
+const WIT_API_KEY=process.env.WIT_API_KEY;
 const prefix = "beanbot ";
 var vbeaning = 0;
+var listening = 0;
 const status = [
 	"bean snorting simulator",
 	"beansusSummon.exe",
@@ -15,6 +18,31 @@ const status = [
 function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+/*-----------CODE IN THIS BLOCK COURTESY OF REFRUITY.XYZ-----------*/
+const { Transform } = require('stream')
+
+function convertBufferTo1Channel(buffer) {
+  const convertedBuffer = Buffer.alloc(buffer.length / 2)
+
+  for (let i = 0; i < convertedBuffer.length / 2; i++) {
+    const uint16 = buffer.readUInt16LE(i * 4)
+    convertedBuffer.writeUInt16LE(uint16, i * 2)
+  }
+
+  return convertedBuffer
+}
+
+class ConvertTo1ChannelStream extends Transform {
+  constructor(source, options) {
+    super(options)
+  }
+
+  _transform(data, encoding, next) {
+    next(null, convertBufferTo1Channel(data))
+  }
+}
+/* ------------------------------------------------------------- */
 
 
 const client = new CommandoClient({
@@ -74,7 +102,22 @@ client.on('message', async message => { //For commands that either do not work w
         }
     }
     /*--------------------------------------------------END OF VBEAN--------------------------------------------------*/
-    if(mCont.startsWith('fuck beans')) {
+
+    if(mCont.startsWith(prefix + 'text2dance') && listening == 0) {
+        const connection = await message.member.voiceChannel.join();
+        var user = '95717881165123584';
+        const reee = connection.createReceiver();
+        const vStream = reee.createPCMStream(user);
+        listening = 1;
+
+        connection.on('speaking', (user, speaking) => {
+            if(!speaking) {
+                return;
+            }
+        })
+    }
+
+    if(mCont.startsWith('fuck beans'||'fuck you beanbot'||'fuck beanbot')) {
         message.react('🖕');
         return;
     }
