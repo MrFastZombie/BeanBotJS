@@ -3,9 +3,19 @@ const { RichEmbed } = require('discord.js');
 const dotenv = require('dotenv').config();
 const Owlbot = require('owlbot-js');
 const Owlbotclient = Owlbot(process.env.OWLBOT_TOKEN);
+var index = 0;
 
-function sleep(ms) {
-	return new Promise(resolve => setTimeout(resolve, ms));
+async function getDict(input) {
+	var dictResult = Owlbotclient.define(input).then(function(result) {
+		if(!(typeof result === 'object')) {
+			message.say('you have broken me you fool');
+			return false;
+		}
+		else{
+				return result;
+		}
+	});
+	return await dictResult;
 }
 
 module.exports = class DictCommand extends Command {
@@ -14,7 +24,7 @@ module.exports = class DictCommand extends Command {
             name: 'dict',
             group: 'useful',
             memberName: 'dict',
-            description: 'Defines the input word. If there are multiple definitions, you can cycle through them by saying next and previous.',
+            description: 'Defines the input word',
 			examples: ['beanbot dict word','beanbot dict beans'],
 			args: [
 				{
@@ -27,31 +37,83 @@ module.exports = class DictCommand extends Command {
     }
     run(message, { wsearch }) {
         async function main() {
-			var wIndex = 0;
-			var dictResult = Owlbotclient.define(wsearch).then(function(result) {
-				if(!(typeof result === 'object')) {
-					message.say('you have broken me you fool');
+			const owlEmbed = {
+				color: 0x0099ff,
+				title: 'blank title',
+				description: 'blank desc',
+				fields: [
+					{
+						name: 'Word Type',
+						value: 'if you see this then something went wrong'
+					},
+					{
+						name: 'Pronunciation',
+						value: 'enjoy this picture'
+					},
+					{
+						name: 'Index',
+						value: 'haha index go hmmmmmmmmmmmmmmmmmmmmmmmmmm'
+					},
+				],
+				image: {
+					url: 'https://i.imgur.com/2MOhFcf.png'
+				},
+				footer: {
+					text: 'Dictionary services courtesy of OwlBot API'
+				},
+			};
+			var owlDefs = await getDict(wsearch);
+			const filter = m => m.author.id == message.author.id;
+			const collector = message.channel.createMessageCollector(filter, { time: 60000 });
+
+			collector.on('collect', m => {
+				var reconstruct = 0;
+				var mesgCont = m.content.toLowerCase()
+				if(mesgCont == 'next'&&index != owlDefs.definitions.length-1) {
+					index = index+1;
+					reconstruct = 1;
+					m.delete();
 				}
-				else{
-						const owlEmbed = new RichEmbed()
-						.setColor('#0099ff')
-						.setTitle(wsearch)
-						.setDescription(result.definitions[wIndex].definition)
-						.addField('Word type', result.definitions[wIndex].type)
-						.addField('Pronunciation', result.pronunciation)
-						.addField('Definition index', wIndex+1 + ' of ' + result.definitions.length)
-						.setImage(result.definitions[wIndex].image_url)
-						.setFooter('Dictionary services courtesy of OwlBot API')
-					message.say(owlEmbed);
-					var filter = message = message.content.includes('next'||'previous');
-					const collector = message.createMessageCollector(filter, { time: 30000 });
-					message.say("If you see this message, you can say next or previous to cycle through definitions.");
-					collector.on('collect', message => {
-						message.say('wow i collected properly wooo');
-					});
-					//await sleep(30000); //Wait 30 seconds for the user to input a next or previous command.
+				else if(mesgCont == 'prev'&&index != 0) {
+					index = index-1;
+					reconstruct = 1;
+					m.delete();
+				}
+				else if(mesgCont == 'next' || mesgCont == 'prev') {
+					m.delete();
+				}
+				else if(mesgCont.includes('beanbot dict')) {
+					collector.stop();
+				}
+				if(reconstruct == 1) {
+					/* EMBED DEFINITION */
+					owlEmbed.title = wsearch;
+					owlEmbed.description = owlDefs.definitions[index].definition;
+					owlEmbed.fields[0].value = owlDefs.definitions[index].type;
+					owlEmbed.fields[1].value = owlDefs.pronunciation;
+					owlEmbed.image.url = owlDefs.definitions[index].image_url;
+					owlEmbed.fields[2].value = index+1 + ' of ' +owlDefs.definitions.length;
+					/* END OF EMBED DEFINITION */
+					dictMSG.edit(new RichEmbed(owlEmbed));
 				}
 			});
+
+			collector.on('end', collected => {
+				updateMSG.delete();
+				index = 0;
+			})
+
+			/* EMBED DEFINITION */
+			owlEmbed.title = wsearch;
+			owlEmbed.description = owlDefs.definitions[index].definition;
+			owlEmbed.fields[0].value = owlDefs.definitions[index].type;
+			owlEmbed.fields[1].value = owlDefs.pronunciation;
+			owlEmbed.image.url = owlDefs.definitions[index].image_url;
+			owlEmbed.fields[2].value = index+1 + ' of ' +owlDefs.definitions.length;
+			/* END OF EMBED DEFINITION */
+
+			var dictMSG = await message.say({ embed: owlEmbed }); //Store the embed message for later so it can be edited.
+			var updateMSG = await message.say('While this message is still here, you can type prev and next to cycle through definitions. This opportunity expires in one minute.'); //Store the cycle opportunity message for later, so it can be deleted.
         }
         main();
     }
