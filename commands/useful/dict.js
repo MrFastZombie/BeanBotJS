@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const { RichEmbed } = require('discord.js');
+const Discord = require('discord.js');
 const dotenv = require('dotenv').config();
 const Owlbot = require('owlbot-js');
 const Owlbotclient = Owlbot(process.env.OWLBOT_TOKEN);
@@ -94,7 +94,7 @@ module.exports = class DictCommand extends Command {
 					owlEmbed.image.url = owlDefs.definitions[index].image_url;
 					owlEmbed.fields[2].value = index+1 + ' of ' +owlDefs.definitions.length;
 					/* END OF EMBED DEFINITION */
-					dictMSG.edit(new RichEmbed(owlEmbed));
+					dictMSG.edit(new Discord.MessageEmbed(owlEmbed));
 				}
 			});
 
