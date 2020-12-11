@@ -22,11 +22,19 @@ module.exports = class FlavCommand extends Command {
             name: 'flavor',
             group: 'fun',
             memberName: 'flavor',
-            description: 'Replies with an embed for a random bean flavor from beanflavors.csv',
-            examples: ['beanbot flavor']
+            description: 'Replies with an embed for a random bean flavor from beanflavors.csv. A number can be specified to select a specific flavor. Note that the number for each flavor is 2 lower than the CSV row it is in.',
+            examples: ['beanbot flavor', 'beanbot flavor 69'],
+            args: [
+                {
+                    key: 'number',
+                    prompt: 'what number dingus',
+                    type: 'integer',
+                    default: -1
+                }
+            ]
         });
     }
-    run(message) {
+    run(message, { number } ) {
         async function main() { //The code has to be in an asynchronous function in order for the array to be defined.
             /*-----------------------------------------------------FLAVOR TESTING-----------------------------------------------------*/
             /*                                                 WELCOME TO FLAVOR TOWN                                                 */
@@ -50,6 +58,9 @@ module.exports = class FlavCommand extends Command {
             /*-----------------------------------------------------END OF FLAVOR TESTING-----------------------------------------------------*/
 
             var flavorSeed = Math.floor(Math.random() * (flavors.length -1) + 1); //First, generate a random number within the range of the flavors.
+                if(number > 0 && number < flavors.length - 1) {
+                    flavorSeed = number;
+                }
                 const flavorEmbed = new Discord.MessageEmbed() //Then define an embed, using data from the selected flavor (flavorSeed).
                     .setColor('#0099ff')
                     .setTitle(flavors[flavorSeed].long + ' Beans')
