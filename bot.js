@@ -54,9 +54,9 @@ client.on('message', async message => { //For commands that either do not work w
 
     /*--------------------------------------------------START OF VBEAN--------------------------------------------------*/
     if(mCont.startsWith(prefix + 'vbean')) { //Plays the beaned meme audio in the VC channel the message author is in.
-        if(message.member.voiceChannel != undefined && vbeaning == 0) {
-            const connection = await message.member.voiceChannel.join();
-            const dispatcher = connection.playFile('./data/beaned.mp3');
+        if(message.member.voice.channel != undefined && vbeaning == 0) {
+            const connection = await message.member.voice.channel.join();
+            const dispatcher = connection.play('./data/beaned.mp3');
             vbeaning = 1;
             dispatcher.setVolume(1);
             //setTimeout(function(), 5000);
@@ -65,7 +65,7 @@ client.on('message', async message => { //For commands that either do not work w
                 
             });
             dispatcher.destroy();
-            message.guild.me.voiceChannel.leave();
+            message.guild.me.voice.channel.leave();
             vbeaning = 0
 
         }
