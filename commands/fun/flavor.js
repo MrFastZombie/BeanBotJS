@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const { RichEmbed } = require('discord.js');
+const Discord = require('discord.js');
 const fs = require('fs');
 const neatCsv = require('neat-csv');
 const path = require('path');
@@ -50,7 +50,7 @@ module.exports = class FlavCommand extends Command {
             /*-----------------------------------------------------END OF FLAVOR TESTING-----------------------------------------------------*/
 
             var flavorSeed = Math.floor(Math.random() * (flavors.length -1) + 1); //First, generate a random number within the range of the flavors.
-                const flavorEmbed = new RichEmbed() //Then define an embed, using data from the selected flavor (flavorSeed).
+                const flavorEmbed = new Discord.MessageEmbed() //Then define an embed, using data from the selected flavor (flavorSeed).
                     .setColor('#0099ff')
                     .setTitle(flavors[flavorSeed].long + ' Beans')
                     .setDescription(flavors[flavorSeed].description)

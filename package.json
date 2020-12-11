@@ -4,8 +4,8 @@
   "description": "A discord bot themed around beans. Yes, beans.",
   "main": "bot.js",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/MrFastZombie/BeanBotJS.git"
+    "type": "git",
+    "url": "https://github.com/MrFastZombie/BeanBotJS.git"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -23,16 +23,16 @@
     "@discordjs/opus": "^0.1.0",
     "@discordjs/uws": "^10.149.0",
     "csv-parser": "^2.3.2",
-    "discord.js": "^11.6.1",
-    "discord.js-commando": "^0.10.0",
+    "discord.js": "^12.2.0",
+    "discord.js-commando": "git+https://github.com/discordjs/Commando.git",
     "dotenv": "^8.2.0",
     "en-dictionary": "^1.2.4",
-    "enmap": "^5.2.4",
-    "ffmpeg-static": "^4.0.1",
+    "enmap": "^5.2.9",
+    "ffmpeg-static": "^4.2.2",
     "neat-csv": "^5.2.0",
     "opusscript": "0.0.7",
     "owlbot-js": "^2.0.0",
     "sqlite": "^2.9.3",
-    "steam-searcher": "^1.0.3"
+    "steam-searcher": "^1.0.4"
   }
 }

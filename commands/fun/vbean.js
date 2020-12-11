@@ -1,5 +1,3 @@
-THIS COMMAND WOULD NOT WORK SO I HAVE DISABLED ITS FILE AND PUT IT IN THE MAIN FILE
-
 const { Command } = require('discord.js-commando');
 const DiscordJS = require('discord.js')
 const fs = require('fs');
@@ -24,24 +22,8 @@ module.exports = class VBeanCommand extends Command {
     run(message) {
         async function main() {
             const sfile = path.join(__dirname, '../../data/beaned.mp3');
-            if(message.member.voiceChannel != undefined) {
-                const connection = await message.member.voiceChannel.join();
-                const dispatcher = connection.playFile(sfile);
-                dispatcher.setVolume(1);
-                await sleep(10000);
-                dispatcher.on('finish', () => {
-                    
-                });
-                dispatcher.destroy();
-                message.guild.me.voiceChannel.leave();
-                return;
-            }
-            else {
-                return message.say('you must be in a VC channel to summon the big bean');
-            }
+            //const connection = await message.
         }
         main();
-        
-
     }
 };
