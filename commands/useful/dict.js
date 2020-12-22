@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const dotenv = require('dotenv').config();
 const Owlbot = require('owlbot-js');
 const Owlbotclient = Owlbot(process.env.OWLBOT_TOKEN);
-var index = 0;
+//var index = 0;
 
 async function getDict(input) {
 	var dictResult = Owlbotclient.define(input).then(function(result) {
@@ -35,8 +35,8 @@ module.exports = class DictCommand extends Command {
 			]
         });
     }
-    run(message, { wsearch }) {
-        async function main() {
+    async run(message, { wsearch }) {
+			var index = 0
 			const owlEmbed = {
 				color: 0x0099ff,
 				title: 'blank title',
@@ -63,28 +63,37 @@ module.exports = class DictCommand extends Command {
 				},
 			};
 			var owlDefs = await getDict(wsearch);
-			const filter = m => m.author.id == message.author.id;
-			const collector = message.channel.createMessageCollector(filter, { time: 60000 });
 
-			collector.on('collect', m => {
+			/* EMBED DEFINITION */
+			owlEmbed.title = wsearch;
+			owlEmbed.description = owlDefs.definitions[0].definition;
+			owlEmbed.fields[0].value = owlDefs.definitions[0].type;
+			owlEmbed.fields[1].value = owlDefs.pronunciation;
+			owlEmbed.image.url = owlDefs.definitions[0].image_url;
+			owlEmbed.fields[2].value = 1 + ' of ' +owlDefs.definitions.length;
+			/* END OF EMBED DEFINITION */
+
+			var dictMSG = await message.say({ embed: owlEmbed }); //Store the embed message for later so it can be edited.
+				dictMSG.react('⬅️')
+					.then(() => dictMSG.react('➡️'))
+					.catch(() => console.error('Failed to react on message '));
+
+			const filter = (reaction, user) => (reaction.emoji.name === '⬅️' || reaction.emoji.name === '➡️') && user.id != '674022563621634069';
+			let collector = dictMSG.createReactionCollector(filter, { time: 60000 });
+
+			collector.on('collect', (reaction, user) => {
+				console.log("I collected :)");
 				var reconstruct = 0;
-				var mesgCont = m.content.toLowerCase()
-				if(mesgCont == 'next'&&index != owlDefs.definitions.length-1) {
+				reaction.users.remove(user.id);
+				if(reaction.emoji.name == '➡️'&&index != owlDefs.definitions.length-1) {
 					index = index+1;
 					reconstruct = 1;
-					m.delete();
 				}
-				else if(mesgCont == 'prev'&&index != 0) {
+				else if(reaction.emoji.name == '⬅️'&&index != 0) {
 					index = index-1;
 					reconstruct = 1;
-					m.delete();
 				}
-				else if(mesgCont == 'next' || mesgCont == 'prev') {
-					m.delete();
-				}
-				else if(mesgCont.includes('beanbot dict')) {
-					collector.stop();
-				}
+
 				if(reconstruct == 1) {
 					/* EMBED DEFINITION */
 					owlEmbed.title = wsearch;
@@ -99,22 +108,10 @@ module.exports = class DictCommand extends Command {
 			});
 
 			collector.on('end', collected => {
-				updateMSG.delete();
+				dictMSG.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
 				index = 0;
 			})
 
-			/* EMBED DEFINITION */
-			owlEmbed.title = wsearch;
-			owlEmbed.description = owlDefs.definitions[index].definition;
-			owlEmbed.fields[0].value = owlDefs.definitions[index].type;
-			owlEmbed.fields[1].value = owlDefs.pronunciation;
-			owlEmbed.image.url = owlDefs.definitions[index].image_url;
-			owlEmbed.fields[2].value = index+1 + ' of ' +owlDefs.definitions.length;
-			/* END OF EMBED DEFINITION */
-
-			var dictMSG = await message.say({ embed: owlEmbed }); //Store the embed message for later so it can be edited.
-			var updateMSG = await message.say('While this message is still here, you can type prev and next to cycle through definitions. This opportunity expires in one minute.'); //Store the cycle opportunity message for later, so it can be deleted.
-        }
-        main();
+			//var updateMSG = await message.say('While this message is still here, you can type prev and next to cycle through definitions. This opportunity expires in one minute.'); //Store the cycle opportunity message for later, so it can be deleted.
     }
 };
