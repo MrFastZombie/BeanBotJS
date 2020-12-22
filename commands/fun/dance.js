@@ -60,7 +60,7 @@ module.exports = class DanceCommand extends Command {
 					output = output + '          ';
 				}
 				else {
-					output = output + this.client.emojis.get(lEmotes[charCode]).toString() + ' ';
+					output = output + this.client.emojis.cache.get(lEmotes[charCode]).toString() + ' ';
 				}
 
             }

@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const { RichEmbed } = require('discord.js');
+const Discord = require('discord.js');
 const steam = require('steam-searcher');
 
 module.exports = class GameCommand extends Command {
@@ -42,7 +42,7 @@ module.exports = class GameCommand extends Command {
 					gamePrice = game.price_overview.final_formatted;
 					var gameCurrency = game.price_overview.currency;
 				}
-				const gameEmbed = new RichEmbed()
+				const gameEmbed = new Discord.MessageEmbed()
 					.setColor('#0099ff')
 					.setTitle(game.name)
 					.setDescription('https://store.steampowered.com/app/'+game.steam_appid)
