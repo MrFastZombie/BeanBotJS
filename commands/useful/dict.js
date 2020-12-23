@@ -123,7 +123,5 @@ module.exports = class DictCommand extends Command {
 				dictMSG.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
 				index = 0;
 			})
-
-			//var updateMSG = await message.say('While this message is still here, you can type prev and next to cycle through definitions. This opportunity expires in one minute.'); //Store the cycle opportunity message for later, so it can be deleted.
     }
 };
