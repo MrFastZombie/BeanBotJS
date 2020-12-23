@@ -8,7 +8,6 @@ const Owlbotclient = Owlbot(process.env.OWLBOT_TOKEN);
 async function getDict(input) {
 	var dictResult = Owlbotclient.define(input).then(function(result) {
 		if(!(typeof result === 'object')) {
-			message.say('you have broken me you fool');
 			return false;
 		}
 		else{
