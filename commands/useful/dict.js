@@ -62,7 +62,18 @@ module.exports = class DictCommand extends Command {
 					text: 'Dictionary services courtesy of OwlBot API'
 				},
 			};
-			var owlDefs = await getDict(wsearch);
+			var owlDefs = await getDict(wsearch).catch(error => {
+				if(!(error.message.includes('404'))) { //For errors that are not 404 errors.
+					message.say('I have encountered a serious error and it is all your fault.')
+					console.error(error);
+				}
+				else { //For errors that are 404 errors.
+					message.say('Could not find any results.');
+				}
+				ableToContinue = 0; //The bot must stop executing the command.
+			});
+
+			if(ableToContinue == 0) {return;} //End execution if an error has occured 
 
 			/* EMBED DEFINITION */
 			owlEmbed.title = wsearch;
