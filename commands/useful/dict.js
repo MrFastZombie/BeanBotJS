@@ -37,6 +37,7 @@ module.exports = class DictCommand extends Command {
     }
     async run(message, { wsearch }) {
 			var index = 0
+			var ableToContinue = 1;
 			const owlEmbed = {
 				color: 0x0099ff,
 				title: 'blank title',
