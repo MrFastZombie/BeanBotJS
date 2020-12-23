@@ -12,7 +12,7 @@ async function getDict(input) {
 			return false;
 		}
 		else{
-				return result;
+			return result;
 		}
 	});
 	return await dictResult;
