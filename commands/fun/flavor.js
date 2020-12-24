@@ -58,7 +58,7 @@ module.exports = class FlavCommand extends Command {
             /*-----------------------------------------------------END OF FLAVOR TESTING-----------------------------------------------------*/
 
             var flavorSeed = Math.floor(Math.random() * (flavors.length -1) + 1); //First, generate a random number within the range of the flavors.
-                if(number > 0 && number < flavors.length - 1) {
+                if(number > 0 && number < flavors.length) { //Use the user input number if it is contained within the array. 
                     flavorSeed = number;
                 }
                 const flavorEmbed = new Discord.MessageEmbed() //Then define an embed, using data from the selected flavor (flavorSeed).
