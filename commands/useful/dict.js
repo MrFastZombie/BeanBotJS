@@ -89,13 +89,19 @@ module.exports = class DictCommand extends Command {
 					.then(() => dictMSG.react('➡️'))
 					.catch(() => console.error('Failed to react on message '));
 
+			if(message.guild === null) {
+				message.say('Note: I cannot control reactions in DMs so the arrow buttons will persist and you will have to click them twice.');
+			}
+
 			const filter = (reaction, user) => (reaction.emoji.name === '⬅️' || reaction.emoji.name === '➡️') && user.id != '674022563621634069';
 			let collector = dictMSG.createReactionCollector(filter, { time: 60000 });
 
 			collector.on('collect', (reaction, user) => {
-				console.log("I collected :)");
 				var reconstruct = 0;
-				reaction.users.remove(user.id);
+				if(message.guild != null) {
+					reaction.users.remove(user.id);
+				}
+				
 				if(reaction.emoji.name == '➡️'&&index != owlDefs.definitions.length-1) {
 					index = index+1;
 					reconstruct = 1;
@@ -119,7 +125,9 @@ module.exports = class DictCommand extends Command {
 			});
 
 			collector.on('end', collected => {
-				dictMSG.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
+				if(message.guild != null) {
+					dictMSG.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
+				}
 				index = 0;
 			})
     }
