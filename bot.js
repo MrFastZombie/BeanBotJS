@@ -45,7 +45,7 @@ client.on('ready', () => { //This block is for changing the status on an interva
     setInterval(() => {
         const index = Math.floor(Math.random() * (status.length -1) + 1);
         client.user.setActivity(status[index], {type: "PLAYING"});
-        console.log('set new status');
+        console.log('set new status: ' + status[index]);
     }, 600000);
 });
 
@@ -60,6 +60,28 @@ client.on('message', async message => { //For commands that either do not work w
             vbeaning = 1;
             dispatcher.setVolume(1);
             //setTimeout(function(), 5000);
+            await sleep(8000);
+            dispatcher.on('finish', () => {
+                
+            });
+            dispatcher.destroy();
+            message.guild.me.voice.channel.leave();
+            vbeaning = 0
+        }
+        else {
+            message.channel.send('You must be in the VC channel to do this, or I am already vbeaning');
+        }
+    }
+    /*--------------------------------------------------END OF VBEAN--------------------------------------------------*/
+
+    /* -------------------------------------------------START OF GOKU-------------------------------------------------*/
+    if(mCont.startsWith(prefix + 'goku')) {
+        if(message.member.voice.channel != undefined && vbeaning == 0) {
+            const connection = await message.member.voice.channel.join();
+            const dispatcher = connection.play('./data/goku.mp3');
+            vbeaning = 1;
+            dispatcher.setVolume(1);
+            //setTimeout(function(), 5000);
             await sleep(10000);
             dispatcher.on('finish', () => {
                 
@@ -67,14 +89,13 @@ client.on('message', async message => { //For commands that either do not work w
             dispatcher.destroy();
             message.guild.me.voice.channel.leave();
             vbeaning = 0
-
         }
         else {
             message.channel.send('You must be in the VC channel to do this, or I am already vbeaning');
         }
     }
-    /*--------------------------------------------------END OF VBEAN--------------------------------------------------*/
-    if(mCont.startsWith('fuck beans')) {
+    /* -------------------------------------------------END OF GOKU-------------------------------------------------*/
+    if(mCont.includes('fuck beans')) {
         message.react('🖕');
         return;
     }
