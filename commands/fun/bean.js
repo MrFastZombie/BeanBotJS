@@ -31,9 +31,6 @@ module.exports = class BeanCommand extends Command {
             if(recipient.id == undefined) {
                 return message.say('invalid input you bean')
             }
-            else if(recipient.id == '348868707965075467') {
-                return message.say('this person does not understand the power of beans and I cannot bean them :(');
-            }
             else if (recipient.id == '674022563621634069') {
                 message.author.send('beaned', {files: [fileDir] });
                 return message.say('I AM THE ONE WHO BEANS', {files: [unoDir] });
@@ -46,7 +43,9 @@ module.exports = class BeanCommand extends Command {
                 return message.say('they just got beaned');
             }
         }
-        main();
+        main().catch((error) => {
+            console.error(error);
+        });
         
     }
 };
