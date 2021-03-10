@@ -111,3 +111,4 @@ dist
 
 #Personal VScode settings
 /.vscode/settings.json
+data/beanbot.db
