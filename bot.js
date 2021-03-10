@@ -26,8 +26,9 @@ async function updateDumbList() {
         var playlist = await ytpl('PLQeJEVxxxHONLgyIEGITtvbndh3Mf5Aaz', {limit: Infinity});
         var idList = new Array();
         let playlistSize = playlist.items.length;
-        for(let i = 0; i < playlistSize; i++) {idList.push(playlist.items[i].id);}
-        db.run('DELETE FROM dumbvideos');
+
+        for(let i = 0; i < playlistSize; i++) {idList.push(playlist.items[i].id);} //Store each video ID in an array. 
+        db.run('DELETE FROM dumbvideos'); //Clears the table to start anew. Probably not great for speed, but works for now. 
         let insert = idList.map((idList) => '(?)').join(','); //Creates a insertion string for SQL that can handle each element in the idList. Example: (?),(?),(?),(?),...,(?) (basically for n elements)
         db.run('INSERT INTO dumbvideos(videoID) VALUES ' + insert, idList);
         db.close();
@@ -60,9 +61,9 @@ client.registry
 client.once('ready', () => {
     console.log('Logged in')
     client.user.setActivity('beans', {type: "PLAYING"});
-    let db = new sqlite.Database('./data/beanbot.db', sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE);
-    db.run('CREATE TABLE IF NOT EXISTS dumbvideos(videoID TEXT NOT NULL)');
-    db.close();
+    let db = new sqlite.Database('./data/beanbot.db', sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE); //Create the database if it does not exist. 
+        db.run('CREATE TABLE IF NOT EXISTS dumbvideos(videoID TEXT NOT NULL)');
+        db.close();
     const updateList = schedule.scheduleJob('0 0 * * *', function() {
         updateDumbList();
     });
