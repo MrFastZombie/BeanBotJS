@@ -51,50 +51,6 @@ client.on('ready', () => { //This block is for changing the status on an interva
 
 client.on('message', async message => { //For commands that either do not work well with commando or would be simpler to put here.
     var mCont = message.content.toLowerCase();
-
-    /*--------------------------------------------------START OF VBEAN--------------------------------------------------*/
-    if(mCont.startsWith(prefix + 'vbean')) { //Plays the beaned meme audio in the VC channel the message author is in.
-        if(message.member.voice.channel != undefined && vbeaning == 0) {
-            const connection = await message.member.voice.channel.join();
-            const dispatcher = connection.play('./data/beaned.mp3');
-            vbeaning = 1;
-            dispatcher.setVolume(1);
-            //setTimeout(function(), 5000);
-            await sleep(8000);
-            dispatcher.on('finish', () => {
-                
-            });
-            dispatcher.destroy();
-            message.guild.me.voice.channel.leave();
-            vbeaning = 0
-        }
-        else {
-            message.channel.send('You must be in the VC channel to do this, or I am already vbeaning');
-        }
-    }
-    /*--------------------------------------------------END OF VBEAN--------------------------------------------------*/
-
-    /* -------------------------------------------------START OF GOKU-------------------------------------------------*/
-    if(mCont.startsWith(prefix + 'goku')) {
-        if(message.member.voice.channel != undefined && vbeaning == 0) {
-            const connection = await message.member.voice.channel.join();
-            const dispatcher = connection.play('./data/goku.mp3');
-            vbeaning = 1;
-            dispatcher.setVolume(1);
-            //setTimeout(function(), 5000);
-            await sleep(10000);
-            dispatcher.on('finish', () => {
-                
-            });
-            dispatcher.destroy();
-            message.guild.me.voice.channel.leave();
-            vbeaning = 0
-        }
-        else {
-            message.channel.send('You must be in the VC channel to do this, or I am already vbeaning');
-        }
-    }
-    /* -------------------------------------------------END OF GOKU-------------------------------------------------*/
     if(mCont.includes('fuck beans')) {
         message.react('🖕');
         return;

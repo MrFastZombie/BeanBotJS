@@ -19,11 +19,20 @@ module.exports = class VBeanCommand extends Command {
             examples: ['beanbot vbean']
         });
     }
-    run(message) {
-        async function main() {
-            const sfile = path.join(__dirname, '../../data/beaned.mp3');
-            //const connection = await message.
+    async run(message) {
+        const sfile = path.join(__dirname, '../../data/beaned.mp3');
+        if(message.member.voice.channel != undefined) {
+            console.log("");
+            const connection = await message.member.voice.channel.join();
+            const dispatcher = connection.play(sfile);
+            await sleep(8000);
+            dispatcher.on('finish', () => {
+                
+            });
+            dispatcher.destroy();
+            if(message.guild.me.voice.channel != undefined) {
+                message.guild.me.voice.channel.leave();
+            }
         }
-        main();
     }
 };
