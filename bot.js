@@ -6,7 +6,6 @@ const path = require('path');
 const dotenv = require('dotenv').config();
 const dtoken = process.env.DISCORD_TOKEN;
 const prefix = "beanbot ";
-var vbeaning = 0;
 const status = [
 	"bean snorting simulator",
 	"beansusSummon.exe",
