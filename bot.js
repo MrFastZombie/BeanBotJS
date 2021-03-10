@@ -63,7 +63,7 @@ client.once('ready', () => {
     let db = new sqlite.Database('./data/beanbot.db', sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE);
     db.run('CREATE TABLE IF NOT EXISTS dumbvideos(videoID TEXT NOT NULL)');
     db.close();
-    const updateList = schedule.scheduleJob('* 0 * * *', function() {
+    const updateList = schedule.scheduleJob('0 0 * * *', function() {
         updateDumbList();
     });
 });
