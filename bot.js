@@ -1,7 +1,9 @@
 const {CommandoClient} = require('discord.js-commando');
+const {performance} = require('perf_hooks');
 const sqlite = require('sqlite3').verbose();
 const schedule = require('node-schedule');
 const ytpl = require('ytpl'); 
+const ms = require('ms');
 const path = require('path');
 const dotenv = require('dotenv').config();
 const dtoken = process.env.DISCORD_TOKEN;
@@ -20,6 +22,7 @@ function sleep(ms) {
 
 async function updateDumbList() {
     try {
+        var t1 = performance.now();
         console.log("Updating dumb video list...");
         let db = new sqlite.Database('./data/beanbot.db', sqlite.OPEN_READWRITE  | sqlite.OPEN_CREATE);
         var playlist = await ytpl('PLQeJEVxxxHONLgyIEGITtvbndh3Mf5Aaz', {limit: Infinity});
@@ -31,7 +34,8 @@ async function updateDumbList() {
         let insert = idList.map((idList) => '(?)').join(','); //Creates a insertion string for SQL that can handle each element in the idList. Example: (?),(?),(?),(?),...,(?) (basically for n elements)
         db.run('INSERT INTO dumbvideos(videoID) VALUES ' + insert, idList);
         db.close();
-        console.log("Dumb video list updated.")
+        var t2 = performance.now();
+        console.log("Dumb video list updated. Took " + ms(t2-t1) + ".");
     }
     catch(err) {
         console.error(err);
