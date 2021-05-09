@@ -79,7 +79,12 @@ module.exports = class DictCommand extends Command {
 			owlEmbed.title = wsearch;
 			owlEmbed.description = owlDefs.definitions[0].definition;
 			owlEmbed.fields[0].value = owlDefs.definitions[0].type;
-			owlEmbed.fields[1].value = owlDefs.pronunciation;
+			if(owlDefs.pronunciation == null) {
+				owlEmbed.fields[1].value = 'No pronunciation found.';
+			}
+			else {
+				owlEmbed.fields[1].value = owlDefs.pronunciation;
+			}
 			owlEmbed.image.url = owlDefs.definitions[0].image_url;
 			owlEmbed.fields[2].value = 1 + ' of ' +owlDefs.definitions.length;
 			/* END OF EMBED DEFINITION */
@@ -116,7 +121,12 @@ module.exports = class DictCommand extends Command {
 					owlEmbed.title = wsearch;
 					owlEmbed.description = owlDefs.definitions[index].definition;
 					owlEmbed.fields[0].value = owlDefs.definitions[index].type;
-					owlEmbed.fields[1].value = owlDefs.pronunciation;
+					if(owlDefs.pronunciation == null) {
+						owlEmbed.fields[1].value = 'No pronunciation found.';
+					}
+					else {
+						owlEmbed.fields[1].value = owlDefs.pronunciation;
+					}
 					owlEmbed.image.url = owlDefs.definitions[index].image_url;
 					owlEmbed.fields[2].value = index+1 + ' of ' +owlDefs.definitions.length;
 					/* END OF EMBED DEFINITION */
