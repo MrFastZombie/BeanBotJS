@@ -1,4 +1,4 @@
-const {CommandoClient} = require('discord.js-commando');
+//const {CommandoClient} = require('discord.js-commando');
 const {performance} = require('perf_hooks');
 const sqlite = require('sqlite3').verbose();
 const schedule = require('node-schedule');
@@ -42,7 +42,7 @@ async function updateDumbList() {
     }
 }
 
-const client = new CommandoClient({
+/*const client = new CommandoClient({
     commandPrefix: 'beanbot ',
     owner: '197406355026345994',
     invite: '',
@@ -58,7 +58,7 @@ client.registry
     ])
     .registerDefaultGroups()
     .registerDefaultCommands()
-    .registerCommandsIn(path.join(__dirname, 'commands')); //registers commands in BeanBotJS/commands
+    .registerCommandsIn(path.join(__dirname, 'commands')); //registers commands in BeanBotJS/commands*/
 
 
 client.once('ready', () => {
