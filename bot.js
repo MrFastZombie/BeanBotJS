@@ -1,4 +1,5 @@
 //const {CommandoClient} = require('discord.js-commando');
+const DiscordJS = require('discord.js');
 const {performance} = require('perf_hooks');
 const sqlite = require('sqlite3').verbose();
 const schedule = require('node-schedule');
@@ -19,6 +20,10 @@ const status = [
 function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+const client = new DiscordJS.Client({
+    intents: [DiscordJS.Intents.FLAGS.GUILDS]
+});
 
 async function updateDumbList() {
     try {
