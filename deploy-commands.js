@@ -27,7 +27,6 @@ function loadCommands(path) {
         db.close();
     } catch (error) {
         console.log(error);
-        if(db) db.close();
     }
 }
 
@@ -48,6 +47,5 @@ function loadCommands(path) {
         console.log("Commands registered.");
     } catch (error) {
         console.log(error);
-        if(db) db.close();
     }
 })();
