@@ -22,7 +22,7 @@ function sleep(ms) {
 }
 
 const client = new DiscordJS.Client({
-    intents: [DiscordJS.Intents.FLAGS.GUILDS]
+    intents: [DiscordJS.Intents.FLAGS.GUILDS, DiscordJS.Intents.FLAGS.GUILD_MESSAGES],
 });
 
 async function updateDumbList() {
