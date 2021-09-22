@@ -1,13 +1,13 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+//const { SlashCommandBuilder } = require('@discordjs/builders');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const fs = require('fs');
-const dotenv = require('dotenv').config();
-const dtoken = process.env.DISCORD_TOKEN;
-const guildID = process.env.DISCORD_GUILD_ID;
-const userID = process.env.DISCORD_USER_ID;
+const dotenv = require('dotenv').config(); // eslint-disable-line no-unused-vars
+const dtoken = process.env.DISCORD_TOKEN; // eslint-disable-line no-undef
+const guildID = process.env.DISCORD_GUILD_ID; // eslint-disable-line no-undef
+const userID = process.env.DISCORD_USER_ID; // eslint-disable-line no-undef
 const rest = new REST({ version: '9' }).setToken(dtoken);
-const sqlite = require('sqlite3').verbose();
+//const sqlite = require('sqlite3').verbose();
 
 var commands = [];
 //.map(command => command.toJSON());
