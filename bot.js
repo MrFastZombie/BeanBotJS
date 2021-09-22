@@ -5,10 +5,9 @@ const sqlite = require('sqlite3').verbose();
 const schedule = require('node-schedule');
 const ytpl = require('ytpl'); 
 const ms = require('ms');
-const path = require('path');
-const dotenv = require('dotenv').config();
-const dtoken = process.env.DISCORD_TOKEN;
-const prefix = "beanbot ";
+const path = require('path'); // eslint-disable-line no-unused-vars
+const dotenv = require('dotenv').config(); // eslint-disable-line no-unused-vars
+const dtoken = process.env.DISCORD_TOKEN; // eslint-disable-line no-undef
 const fs = require('fs');
 const status = [
 	"bean snorting simulator",
@@ -18,7 +17,7 @@ const status = [
 	"beans"
 ]
 
-function sleep(ms) {
+function sleep(ms) { // eslint-disable-line no-unused-vars
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
@@ -50,6 +49,7 @@ async function updateDumbList() {
 
         for(let i = 0; i < playlistSize; i++) {idList.push(playlist.items[i].id);} //Store each video ID in an array. 
         db.run('DELETE FROM dumbvideos'); //Clears the table to start anew. Probably not great for speed, but works for now. 
+        // eslint-disable-next-line no-unused-vars
         let insert = idList.map((idList) => '(?)').join(','); //Creates a insertion string for SQL that can handle each element in the idList. Example: (?),(?),(?),(?),...,(?) (basically for n elements)
         db.run('INSERT INTO dumbvideos(videoID) VALUES ' + insert, idList);
         db.close();
@@ -86,7 +86,7 @@ client.once('ready', () => {
     let db = new sqlite.Database('./data/beanbot.db', sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE); //Create the database if it does not exist. 
         db.run('CREATE TABLE IF NOT EXISTS dumbvideos(videoID TEXT NOT NULL)');
         db.close();
-    const updateList = schedule.scheduleJob('0 0 * * *', function() {
+    const updateList = schedule.scheduleJob('0 0 * * *', function() { // eslint-disable-line no-unused-vars
         updateDumbList();
     });
 });
@@ -94,7 +94,8 @@ client.once('ready', () => {
 client.on('ready', () => { //This block is for changing the status on an interval. Should still work fine if more are added to const status above.
     setInterval(() => {
         const index = Math.floor(Math.random() * (status.length -1) + 1);
-        client.user.setActivity(status[index], {type: "PLAYING"}); //Note: Custom status is a type option, but it does not work. :(
+        //client.user.setActivity(status[index], {type: "PLAYING"}); //Note: Custom status is a type option, but it does not work. :(
+        client.user.setActivity('Being reprogrammed :(', {type: "PLAYING"});
         console.log('set new status: ' + status[index]);
     }, 600000);
 });
