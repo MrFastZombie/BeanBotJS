@@ -80,7 +80,7 @@ client.on('ready', () => { //This block is for changing the status on an interva
     }, 600000);
 });
 
-client.on('message', async message => { //For commands that either do not work well with commando or would be simpler to put here.
+client.on('messageCreate', async message => { //For commands that either do not work well with commando or would be simpler to put here.
     var mCont = message.content.toLowerCase();
     if(mCont.includes('fuck beans')) {
         message.react('🖕');
