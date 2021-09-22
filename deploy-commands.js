@@ -14,17 +14,17 @@ var commands = [];
 
 function loadCommands(path) {
     try {
-        let db = new sqlite.Database('./data/beanbot.db', sqlite.OPEN_READWRITE  | sqlite.OPEN_CREATE); //Putting command info into database for later reference
+        //let db = new sqlite.Database('./data/beanbot.db', sqlite.OPEN_READWRITE  | sqlite.OPEN_CREATE); //Putting command info into database for later reference
         fs.readdirSync(path).forEach(file => {
             if(file.endsWith('.js')) {
                 var loadFile = require(path + file);
-                commands.push(loadFile);
-                db.run("INSERT INTO commands(name, description, options) VALUES(\'" + loadFile.name + "\', \'" + loadFile.description + "\', \'" + loadFile.options.toString() + "\')");
+                commands.push(loadFile.data);
+                //db.run("INSERT INTO commands(name, description, options) VALUES(\'" + loadFile.name + "\', \'" + loadFile.description + "\', \'" + loadFile.options.toString() + "\')");
             } else {
                 console.warn("Warning: Unrecognized file found in commands folder " + path);
             }
         });
-        db.close();
+        //db.close();
     } catch (error) {
         console.log(error);
     }
@@ -32,9 +32,9 @@ function loadCommands(path) {
 
 (async () => {
     try {
-        let db = new sqlite.Database('./data/beanbot.db', sqlite.OPEN_READWRITE  | sqlite.OPEN_CREATE); //Putting command info into database for later reference
-        db.run('DELETE FROM commands'); //Clear the command table every run, to ensure that removed commands are not referenced in the database
-        db.close();
+        //let db = new sqlite.Database('./data/beanbot.db', sqlite.OPEN_READWRITE  | sqlite.OPEN_CREATE); //Putting command info into database for later reference
+        //db.run('DELETE FROM commands'); //Clear the command table every run, to ensure that removed commands are not referenced in the database
+        //db.close();
 
         loadCommands('./commands/fun/');
         loadCommands('./commands/useful/');

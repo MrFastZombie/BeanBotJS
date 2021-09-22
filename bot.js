@@ -9,6 +9,7 @@ const path = require('path');
 const dotenv = require('dotenv').config();
 const dtoken = process.env.DISCORD_TOKEN;
 const prefix = "beanbot ";
+const fs = require('fs');
 const status = [
 	"bean snorting simulator",
 	"beansusSummon.exe",
@@ -24,6 +25,19 @@ function sleep(ms) {
 const client = new DiscordJS.Client({
     intents: [DiscordJS.Intents.FLAGS.GUILDS, DiscordJS.Intents.FLAGS.GUILD_MESSAGES],
 });
+
+client.commands = new DiscordJS.Collection();
+const commandFiles = fs.readdirSync('./commands/fun').filter(file => file.endsWith('.js')).concat(fs.readdirSync('./commands/useful').filter(file => file.endsWith('.js')));
+
+for(const file of commandFiles) {
+    var command;
+    if(fs.existsSync('./commands/fun/' + file)) {
+        command = require('./commands/fun/' + file);
+    } else if (fs.existsSync('./commands/useful/' + file)) {
+        command = require('./commands/useful/' + file);
+    } else {console.warn('WARNING: File ' + file + ' not found in command folders.');}
+    client.commands.set(command.data.name, command);
+}
 
 async function updateDumbList() {
     try {
@@ -90,6 +104,20 @@ client.on('message', async message => { //For commands that either do not work w
     if(mCont.includes('fuck beans')) {
         message.react('🖕');
         return;
+    }
+})
+
+client.on('interactionCreate', async interaction => {
+    if(!interaction.isCommand()) return;
+    const command = client.commands.get(interaction.commandName);
+
+    if(!command) return;
+
+    try {
+        await command.execute(interaction);
+    } catch (error) {
+        console.error(error);
+        await interaction.reply({content: 'There was an error executing this command :(', ephemeral: true});
     }
 })
 
