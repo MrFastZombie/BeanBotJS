@@ -44,6 +44,15 @@ function loadCommands(path) {
             Routes.applicationGuildCommands(userID, guildID),
             {body: commands},
         );
+
+        // eslint-disable-next-line no-undef
+        if(process.env.DISCORD_GUILD_ID2 && process.env.DISCORD_GUILD_ID2 !== '') {
+            await rest.put(
+                // eslint-disable-next-line no-undef
+                Routes.applicationGuildCommands(userID, process.env.DISCORD_GUILD_ID2),
+                {body: commands},
+            );
+        }
         console.log("Commands registered.");
     } catch (error) {
         console.log(error);
