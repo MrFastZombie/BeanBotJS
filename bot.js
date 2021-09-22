@@ -1,4 +1,3 @@
-//const {CommandoClient} = require('discord.js-commando');
 const DiscordJS = require('discord.js');
 const {performance} = require('perf_hooks');
 const sqlite = require('sqlite3').verbose();
@@ -60,25 +59,6 @@ async function updateDumbList() {
         console.error(err);
     }
 }
-
-/*const client = new CommandoClient({
-    commandPrefix: 'beanbot ',
-    owner: '197406355026345994',
-    invite: '',
-    disableEveryone: true,
-    unknownCommandResponse: false,
-});
-
-client.registry
-    .registerDefaultTypes()
-    .registerGroups([
-        ['fun', 'fun commands'],
-        ['useful', 'useful commands'],
-    ])
-    .registerDefaultGroups()
-    .registerDefaultCommands()
-    .registerCommandsIn(path.join(__dirname, 'commands')); //registers commands in BeanBotJS/commands*/
-
 
 client.once('ready', () => {
     console.log('Logged in')
