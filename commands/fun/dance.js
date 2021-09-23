@@ -64,11 +64,9 @@ module.exports = {
                 output = "That is too long. :(";
                 await interaction.reply(output);
             } else if (maxLines > 1 && output.length > 2000) { //bless this mess :)
-                //success = true;
                 var outputs = [output];
 
                 for(let i = 0; i < maxLines-1; i++) {
-                    console.log('Currently on output: ' + i);
                     var splitput = outputs[i].split('           ');
                     while(outputs[i].length > 2000 && success) {
                         let last = splitput.pop();
