@@ -17,6 +17,7 @@ function loadCommands(path) {
         //let db = new sqlite.Database('./data/beanbot.db', sqlite.OPEN_READWRITE  | sqlite.OPEN_CREATE); //Putting command info into database for later reference
         fs.readdirSync(path).forEach(file => {
             if(file.endsWith('.js')) {
+                console.log('Registering ' + file);
                 var loadFile = require(path + file);
                 commands.push(loadFile.data);
                 //db.run("INSERT INTO commands(name, description, options) VALUES(\'" + loadFile.name + "\', \'" + loadFile.description + "\', \'" + loadFile.options.toString() + "\')");
