@@ -30,7 +30,6 @@ const lEmotes = [ //EmoteIDs for all of the letters of the alphabet. Used for th
 	"683575347031048224"  //Z 25
 ]
 
-const client = require('../../bot.js');
 const maxLines = 2;
 
 module.exports = {
@@ -43,6 +42,7 @@ module.exports = {
                 .setRequired(true)),
     async execute(interaction) {
         try {
+            const client = interaction.client;
             var output = '';
             var success = true;
             var input = interaction.options.getString('input').toLowerCase();
