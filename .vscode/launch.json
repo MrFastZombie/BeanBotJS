@@ -6,6 +6,7 @@
     "configurations": [
         {
             "type": "node",
+            "runtimeVersion": "16.9.0", //Note: This setting is for NVM. If you are not using NVM and debugging is not working, try removing this option. If you are using NVM, make sure this setting is set to your current NVM node version.
             "request": "launch",
             "name": "Launch Program",
             "skipFiles": [
