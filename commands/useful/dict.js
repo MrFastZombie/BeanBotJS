@@ -133,7 +133,6 @@ module.exports = {
                         var newDictEmbed;
                         var replyArgs = {};
                         if(i.customId === 'type') {
-                            console.log('Collected type');
                             selectedType = i.values[0];
                             index = 0;
                         } else if (i.customId === 'next' ) {
