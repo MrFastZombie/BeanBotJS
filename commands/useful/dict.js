@@ -73,6 +73,15 @@ function buildComponents(index, length, definitions, wordTypes) {
     return components;
 }
 
+async function beanFetch(term) {
+    try {
+        let results = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + term).then(res => res.json());
+        if(results.message) { return false; } else { return results; }
+    } catch (error) {
+        return false; 
+    }
+}
+
 module.exports = {
     data: new SlashCommandBuilder()
             .setName('dict')
@@ -84,14 +93,15 @@ module.exports = {
     async execute(interaction) {
         try {
             const searchTerm = await interaction.options.getString('term');
-            var results = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + searchTerm).then(res => res.json());
+            //var results = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + searchTerm).then(res => res.json());
+            var results = await beanFetch(searchTerm);
             var wordTypes = [];
             var definitions = {};
             var selectedType;
             var index = 0;
             var reply;
 
-            if(results.message) {
+            if(results === false) {
                 await interaction.reply('Couldn\'t find the word :(');
             } else {
                 results.forEach(word => {
