@@ -21,7 +21,6 @@ function loadCommands(path) {
                 console.warn("Warning: Unrecognized file found in commands folder " + path);
             }
         });
-        //db.close();
     } catch (error) {
         console.log(error);
     }
