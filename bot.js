@@ -21,7 +21,7 @@ function sleep(ms) { // eslint-disable-line no-unused-vars
 }
 
 const client = new DiscordJS.Client({
-    intents: [DiscordJS.Intents.FLAGS.GUILDS, DiscordJS.Intents.FLAGS.GUILD_MESSAGES],
+    intents: [DiscordJS.Intents.FLAGS.GUILDS, DiscordJS.Intents.FLAGS.GUILD_MESSAGES, DiscordJS.Intents.FLAGS.GUILD_VOICE_STATES],
 });
 
 client.commands = new DiscordJS.Collection();
