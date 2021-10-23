@@ -73,27 +73,30 @@ module.exports = {
             const collector = interaction.channel.createMessageComponentCollector({filter, time: 600000});
 
             collector.on('collect', async i => {
-                if(i.message.id === reply.id) {
-                    var response = 0;
-                    var step = true;
-                    if(i.customId === 'yes') {response = 0;}
-                    else if(i.customId === 'no') {response = 1;}
-                    else if(i.customId === 'dk') {response = 2;}
-                    else if(i.customId === 'prob') {response = 3;}
-                    else if(i.customId === 'probn') {response = 4;}
-                    else if(i.customId === 'winyes') {
-                        step = false;
-                        await i.update({components: []});
-                    } else if(i.customId === 'winno' || i.customId === 'back') {
-                        step = false;
-                        await akinator.back();
-                        await i.update(await createMessage(akinator));
-                    }
-                    if(step) {
-                        console.log();
-                        await akinator.step(response);
-                        await i.update(await createMessage(akinator));
-                    }
+                try {
+                    if(i.message.id === reply.id) {
+                        var response = 0;
+                        var step = true;
+                        if(i.customId === 'yes') {response = 0;}
+                        else if(i.customId === 'no') {response = 1;}
+                        else if(i.customId === 'dk') {response = 2;}
+                        else if(i.customId === 'prob') {response = 3;}
+                        else if(i.customId === 'probn') {response = 4;}
+                        else if(i.customId === 'winyes') {
+                            step = false;
+                            await i.update({components: []});
+                        } else if(i.customId === 'winno' || i.customId === 'back') {
+                            step = false;
+                            await akinator.back();
+                            await i.update(await createMessage(akinator));
+                        }
+                        if(step) {
+                            await akinator.step(response);
+                            await i.update(await createMessage(akinator));
+                        }
+                    }   
+                } catch (error) {
+                    console.log(error);
                 }
             });
 
