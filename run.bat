@@ -2,5 +2,5 @@
 :main
 node bot.js
 echo Beanbot has crashed! Restarting...
-TIMEOUT 5
+TIMEOUT 30
 goto main

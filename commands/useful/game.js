@@ -1,38 +1,36 @@
-const { Command } = require('discord.js-commando');
-const Discord = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { Interaction, MessageEmbed } = require('discord.js'); // eslint-disable-line no-unused-vars
 const steam = require('steam-searcher');
 
-module.exports = class GameCommand extends Command {
-    constructor(client) {
-        super(client, {
-            name: 'game',
-            group: 'useful',
-            memberName: 'game',
-            description: 'Returns the first Steam result for a game search',
-			examples: ['beanbot game Half Life'],
-			args: [
-				{
-				key: 'gsearch',
-				prompt: 'enter your search terms dummy',
-				type: 'string'
-				}
-			]
-        });
-    }
-    run(message, { gsearch }) {
-        async function main() {
-			var gameSearch = gsearch;
-			steam.find({search: gameSearch}, function (err, game) {
+module.exports = {
+    data: new SlashCommandBuilder()
+            .setName('game')
+            .setDescription('Search for a game from Steam')
+            .addStringOption(option =>
+                option.setName('search')
+                .setDescription('The game to search for')
+                .setRequired(true)),
+    async execute(interaction) {
+        try {
+            var search = interaction.options.getString('search');
+            let response = null;
+            var gameCurrency, gamePrice;
+            var gameEmbed = null;
+
+            await interaction.deferReply();
+
+            await steam.find({search: search}, function (err, game) {
 				if(err != null) {
-					message.channel.send('An error has occurred.');
-					message.channel.send(err.message);
-					return;
+                    response = err.message;
+                    if(response != 'No results found') console.error(err.message);
+                    interaction.followUp('Steam Parser returned this error: ' + response);
+                    return;
 				}
-				if(game.hasOwnProperty('price_overview') == false)
+				if(game.price_overview === undefined)
 				{
-					var gameCurrency = '';
+					gameCurrency = '';
 					if(game.is_free){
-						var gamePrice = 'Free!';
+						gamePrice = 'Free!';
 					}
 					else {
 						gamePrice = '¯\\_(ツ)_/¯';
@@ -40,9 +38,10 @@ module.exports = class GameCommand extends Command {
 				}
 				else {
 					gamePrice = game.price_overview.final_formatted;
-					var gameCurrency = game.price_overview.currency;
+					gameCurrency = game.price_overview.currency;
 				}
-				const gameEmbed = new Discord.MessageEmbed()
+
+                gameEmbed = new MessageEmbed()
 					.setColor('#0099ff')
 					.setTitle(game.name)
 					.setDescription('https://store.steampowered.com/app/'+game.steam_appid)
@@ -51,10 +50,16 @@ module.exports = class GameCommand extends Command {
 					.addField('Publisher', game.publishers[0], true)
 					.addField('Developer', game.developers[0], true)
 					.setImage(game.header_image)
-					.setFooter('Game info credit: Steam Parser by MAPReiff')
-				message.channel.send(gameEmbed);
-			});
+					.setFooter('Game info credit: Steam Parser by MAPReiff');
+
+                    if(gameEmbed != null) {
+                        interaction.editReply({embeds: [gameEmbed]});
+                    } else { interaction.editReply('Something went wrong :('); }
+                    return;
+            });
+
+        } catch (error) {
+            console.error(error);
         }
-        main();
     }
-};
+}

@@ -1,51 +1,37 @@
-const { Command } = require('discord.js-commando');
-const path = require('path');
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { MessageAttachment } = require('discord.js');
+const { Interaction } = require('discord.js'); // eslint-disable-line no-unused-vars
+module.exports = {
+    data: new SlashCommandBuilder()
+            .setName('bean')
+            .setDescription("Bean someone!")
+            .addUserOption(option => 
+                option.setName('target')
+                .setDescription('The user to bean')
+                .setRequired(true))
+            .addStringOption(option =>
+                option.setName('message')
+                .setDescription('Optional message to send to the target user.')
+                .setRequired(false)),
+    async execute(interaction) {
+        const beanedImg = new MessageAttachment('./data/images/beaned.png', 'beaned.png');
+        const unoImg = new MessageAttachment('./data/images/uno.png', 'uno.png');
+        var user = interaction.options.getUser('target');
+        const message = interaction.options.getString('message');
 
-module.exports = class BeanCommand extends Command {
-    constructor(client) { 
-        super(client, {
-            name: 'bean',
-            group: 'fun',
-            memberName: 'bean',
-            description: 'Sends a bean meme to the tagged user.',
-            examples: ['beanbot bean @user','beanbot bean @user message', 'beanbot bean @MrFastZombie u smelly'],
-            args: [
-                {
-                    key: 'recipient',
-                    prompt: 'tag the user who you wish to bean my dude',
-                    type: 'user'
-                },
-                {
-                    key: 'umessage',
-                    prompt: 'type a message to send to the user',
-                    type: 'string',
-                    default: ''
-                }
-            ]
-        });
-    }
-    run(message, { recipient, umessage }) {
-        async function main() {
-            const fileDir = path.join(__dirname, '../../data/images/beaned.png');
-            const unoDir = path.join(__dirname, '../../data/images/uno.png');
-            if(recipient.id == undefined) {
-                return message.say('invalid input you bean')
-            }
-            else if (recipient.id == '674022563621634069') {
-                message.author.send('beaned', {files: [fileDir] });
-                return message.say('I AM THE ONE WHO BEANS', {files: [unoDir] });
-            }
-            else {
-                if(umessage != '') {
-                    recipient.send(umessage);
-                }
-                recipient.send('beaned', {files: [fileDir] });
-                return message.say('they just got beaned');
-            }
-        }
-        main().catch((error) => {
+        try {
+            var reply = "They just got beaned."
+
+            if(user.id == '674022563621634069') {
+                reply = {content: "I AM THE ONE WHO BEANS", files: [unoImg]};
+                user = interaction.user;
+            } 
+
+            user.send({content: 'beaned', files: [beanedImg]}).catch(err => {console.log(err.message); reply = 'Failed to bean that user. :(';});
+            if(message) user.send(message).catch(err => console.log(err.message));
+            await interaction.reply(reply);
+        } catch (error) {
             console.error(error);
-        });
-        
+        }
     }
-};
+}

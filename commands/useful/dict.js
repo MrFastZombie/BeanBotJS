@@ -1,144 +1,170 @@
-const { Command } = require('discord.js-commando');
-const Discord = require('discord.js');
-const dotenv = require('dotenv').config();
-const Owlbot = require('owlbot-js');
-const Owlbotclient = Owlbot(process.env.OWLBOT_TOKEN);
-//var index = 0;
+const { SlashCommandBuilder } = require('@discordjs/builders');
+//const { InteractionResponseType } = require('discord-api-types');
+const { Interaction, MessageActionRow, MessageButton, MessageSelectMenu } = require('discord.js'); // eslint-disable-line no-unused-vars
+const fetch = require('node-fetch');
 
-async function getDict(input) {
-	var dictResult = Owlbotclient.define(input).then(function(result) {
-		if(!(typeof result === 'object')) {
-			return false;
-		}
-		else{
-			return result;
-		}
-	});
-	return await dictResult;
+function createEmbed(searchTerm, definition, origin, wordType, index, maxIndex, synonyms) {
+    var syn = 'N/A';
+    if(origin === undefined) { origin = 'N/A'; }
+    if(synonyms != undefined) { syn = synonyms.join(', '); }
+    if(syn.length == 0) {syn = 'N/A'; }
+    else if(syn.length > 1024) { syn = 'Too long :(' }
+
+    return {
+        color: 0x0099ff,
+        title: searchTerm,
+        description: definition,
+        fields: [
+            {
+                name: 'Origin',
+                value: origin
+            },
+            {
+                name: 'Word Type',
+                value: wordType
+            },
+            {
+                name: 'Synonyms',
+                value: syn
+            },
+            {
+                name: 'Index',
+                value: index + ' of ' + maxIndex
+            },
+        ],
+        footer: {
+            text: 'Data provided by freeDictionaryAPI'
+        },
+    };
 }
 
-module.exports = class DictCommand extends Command {
-    constructor(client) {
-        super(client, {
-            name: 'dict',
-            group: 'useful',
-            memberName: 'dict',
-            description: 'Defines the input word',
-			examples: ['beanbot dict word','beanbot dict beans'],
-			args: [
-				{
-				key: 'wsearch',
-				prompt: 'enter your word dummy',
-				type: 'string'
-				}
-			]
-        });
+function buildComponents(index, length, definitions, wordTypes) {
+    var components = [];
+    var dictButtonRow = new MessageActionRow();
+    var nextButton = new MessageButton().setCustomId('next').setLabel('Next').setStyle('PRIMARY');
+    var prevButton = new MessageButton().setCustomId('previous').setLabel('Previous').setStyle('PRIMARY');
+    var dictSelectRow = new MessageActionRow()
+                        .addComponents(
+                            new MessageSelectMenu().setCustomId('type').setPlaceholder('Word Type').addOptions(wordTypes)
+                        )
+    var buttonsNeeded = true;
+
+    if(length == 1) { //If buttons are unnecessary
+        buttonsNeeded = false;
+    } else if(index == 0) { //Starting position
+        prevButton.setDisabled(true);
+        nextButton.setDisabled(false);
+    } else if(index > 0 && index < length-1) { //When between first and last index
+        prevButton.setDisabled(false);
+        nextButton.setDisabled(false);
+    } else if(index == length-1) { //When at the end of the list
+        prevButton.setDisabled(false);
+        nextButton.setDisabled(true);
     }
-    async run(message, { wsearch }) {
-			var index = 0
-			var ableToContinue = 1;
-			const owlEmbed = {
-				color: 0x0099ff,
-				title: 'blank title',
-				description: 'blank desc',
-				fields: [
-					{
-						name: 'Word Type',
-						value: 'if you see this then something went wrong'
-					},
-					{
-						name: 'Pronunciation',
-						value: 'enjoy this picture'
-					},
-					{
-						name: 'Index',
-						value: 'haha index go hmmmmmmmmmmmmmmmmmmmmmmmmmm'
-					},
-				],
-				image: {
-					url: 'https://i.imgur.com/2MOhFcf.png'
-				},
-				footer: {
-					text: 'Dictionary services courtesy of OwlBot API'
-				},
-			};
-			var owlDefs = await getDict(wsearch).catch(error => {
-				if(!(error.message.includes('404'))) { //For errors that are not 404 errors.
-					message.say('I have encountered a serious error and it is all your fault.')
-					console.error(error);
-				}
-				else { //For errors that are 404 errors.
-					message.say('Could not find any results.');
-				}
-				ableToContinue = 0; //The bot must stop executing the command.
-			});
 
-			if(ableToContinue == 0) {return;} //End execution if an error has occured 
-
-			/* EMBED DEFINITION */
-			owlEmbed.title = wsearch;
-			owlEmbed.description = owlDefs.definitions[0].definition;
-			owlEmbed.fields[0].value = owlDefs.definitions[0].type;
-			if(owlDefs.pronunciation == null) {
-				owlEmbed.fields[1].value = 'No pronunciation found.';
-			}
-			else {
-				owlEmbed.fields[1].value = owlDefs.pronunciation;
-			}
-			owlEmbed.image.url = owlDefs.definitions[0].image_url;
-			owlEmbed.fields[2].value = 1 + ' of ' +owlDefs.definitions.length;
-			/* END OF EMBED DEFINITION */
-
-			var dictMSG = await message.say({ embed: owlEmbed }); //Store the embed message for later so it can be edited.
-				dictMSG.react('⬅️')
-					.then(() => dictMSG.react('➡️'))
-					.catch(() => console.error('Failed to react on message '));
-
-			if(message.guild === null) {
-				message.say('Note: I cannot control reactions in DMs so the arrow buttons will persist and you will have to click them twice.');
-			}
-
-			const filter = (reaction, user) => (reaction.emoji.name === '⬅️' || reaction.emoji.name === '➡️') && user.id != '674022563621634069';
-			let collector = dictMSG.createReactionCollector(filter, { time: 60000 });
-
-			collector.on('collect', (reaction, user) => {
-				var reconstruct = 0;
-				if(message.guild != null) {
-					reaction.users.remove(user.id);
-				}
-				
-				if(reaction.emoji.name == '➡️'&&index != owlDefs.definitions.length-1) {
-					index = index+1;
-					reconstruct = 1;
-				}
-				else if(reaction.emoji.name == '⬅️'&&index != 0) {
-					index = index-1;
-					reconstruct = 1;
-				}
-
-				if(reconstruct == 1) {
-					/* EMBED DEFINITION */
-					owlEmbed.title = wsearch;
-					owlEmbed.description = owlDefs.definitions[index].definition;
-					owlEmbed.fields[0].value = owlDefs.definitions[index].type;
-					if(owlDefs.pronunciation == null) {
-						owlEmbed.fields[1].value = 'No pronunciation found.';
-					}
-					else {
-						owlEmbed.fields[1].value = owlDefs.pronunciation;
-					}
-					owlEmbed.image.url = owlDefs.definitions[index].image_url;
-					owlEmbed.fields[2].value = index+1 + ' of ' +owlDefs.definitions.length;
-					/* END OF EMBED DEFINITION */
-					dictMSG.edit(new Discord.MessageEmbed(owlEmbed));
-				}
-			});
-
-			collector.on('end', collected => {
-				if(message.guild != null) {
-					dictMSG.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
-				}
-				index = 0;
-			})
+    if(Object.keys(definitions).length > 1) {
+        components.push(dictSelectRow);
     }
-};
+
+    if(buttonsNeeded) {
+        dictButtonRow.addComponents([prevButton, nextButton]);
+        components.push(dictButtonRow);
+    }
+    return components;
+}
+
+async function beanFetch(term) {
+    try {
+        let results = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + term).then(res => res.json());
+        if(results.message) { return false; } else { return results; }
+    } catch (error) {
+        return false; 
+    }
+}
+
+module.exports = {
+    data: new SlashCommandBuilder()
+            .setName('dict')
+            .setDescription('Look up a word in the Beanster\'s dictionary.')
+            .addStringOption(option =>
+                option.setName('term')
+                .setDescription('Word to look up')
+                .setRequired(true)),
+    async execute(interaction) {
+        try {
+            const searchTerm = await interaction.options.getString('term');
+            //var results = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + searchTerm).then(res => res.json());
+            var results = await beanFetch(searchTerm);
+            var wordTypes = [];
+            var definitions = {};
+            var selectedType;
+            var index = 0;
+            var reply;
+
+            if(results === false) {
+                await interaction.reply('Couldn\'t find the word :(');
+            } else {
+                results.forEach(word => {
+                    word.meanings.forEach(meaning => {
+                        var success = true;
+                        var entry = {label: meaning.partOfSpeech.charAt(0).toUpperCase() + meaning.partOfSpeech.slice(1), value: meaning.partOfSpeech};
+                        wordTypes.forEach(type => {
+                            if(type.label == entry.label && type.value == entry.value) success = false;
+                        });
+                        if(success === true) {
+                            wordTypes.push(entry);
+                            definitions[entry.value] = [];
+                        }
+                    });
+                });
+    
+                results.forEach(word => {
+                    word.meanings.forEach(meaning => {
+                        definitions[meaning.partOfSpeech] = definitions[meaning.partOfSpeech].concat(meaning.definitions);
+                        definitions[meaning.partOfSpeech].forEach(definition => {
+                            definition['origin'] = word.origin;
+                        });
+                    });
+                });
+    
+                    selectedType = Object.keys(definitions)[0];
+                var dictEmbed = createEmbed(searchTerm, definitions[Object.keys(definitions)[0]][0].definition, definitions[Object.keys(definitions)[0]][0].origin, selectedType, '1', definitions[Object.keys(definitions)[0]].length, definitions[Object.keys(definitions)[0]][0].synonyms);
+
+                await interaction.reply({content: 'From Beanster\'s Dictionary:', embeds: [dictEmbed], components: buildComponents(index, definitions[Object.keys(definitions)[0]].length, definitions, wordTypes)});
+                
+                reply = await interaction.fetchReply();
+                
+                const componentFilter = filter => filter.customId === 'previous' || filter.customId === 'next' || filter.customId === 'type';
+
+                const collector = interaction.channel.createMessageComponentCollector({componentFilter, time: 120000});
+
+                collector.on('collect', async i => {
+                    if(i.message.id === reply.id) { //Only do collection handling if the message is the same.
+                        var newDictEmbed;
+                        var replyArgs = {};
+                        if(i.customId === 'type') {
+                            selectedType = i.values[0];
+                            index = 0;
+                        } else if (i.customId === 'next' ) {
+                            index++;
+                        } else if (i.customId === 'previous') {
+                            index--;
+                        }
+                        newDictEmbed = createEmbed(searchTerm, definitions[selectedType][index].definition, definitions[selectedType][index].origin, selectedType, index+1, definitions[selectedType].length, definitions[selectedType][index].synonyms);
+                        replyArgs['components'] = buildComponents(index, definitions[selectedType].length, definitions, wordTypes);
+                        replyArgs['embeds'] = [newDictEmbed];
+                        await i.update(replyArgs);
+                    }
+                    
+                });
+
+                collector.on('end', async collected => {
+                    await interaction.editReply({components: []});
+                })
+            }
+            
+        } catch (error) {
+            console.error(error);
+        }
+    }
+}

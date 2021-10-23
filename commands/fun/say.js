@@ -1,23 +1,20 @@
-const { Command } = require('discord.js-commando');
-const { RichEmbed } = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { Interaction } = require('discord.js'); // eslint-disable-line no-unused-vars
 
-module.exports = class GameCommand extends Command {
-    constructor(client) {
-        super(client, {
-            name: 'say',
-            group: 'fun',
-            memberName: 'say',
-            description: 'Makes beanbot say what you type and deletes your message to hide what you have done.',
-			examples: ['beanbot say Beanbot is cool']
-        });
-    }
-    run(message) {
-        async function main() {
-            var mCont = message.content;
-            var sInput = mCont.slice(12, mCont.length);
-			message.channel.send(sInput);
-			message.delete();
+module.exports = {
+    data: new SlashCommandBuilder()
+            .setName('say')
+            .setDescription('Make beanbot say something :)')
+            .addStringOption(option =>
+                option.setName('input')
+                .setDescription('The thing I will say :)')
+                .setRequired(true)),
+    async execute(interaction) {
+
+        try {
+            interaction.reply(interaction.options.getString('input'));
+        } catch (error) {
+            console.error(error);
         }
-        main();
     }
-};
+}
