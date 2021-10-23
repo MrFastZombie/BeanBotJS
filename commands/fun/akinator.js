@@ -36,7 +36,7 @@ async function createMessage(akin) {
         embed.addFields(
             {name: 'Question', value: akin.question}
         );
-        embed.setFooter('Current step: ' + akin.currentStep);
+        embed.setFooter('Current step: ' + (akin.currentStep + 1));
         output['components'].push(playActionRow);
         if(akin.currentStep > 0) {
             output['components'].push(playBackRow);
