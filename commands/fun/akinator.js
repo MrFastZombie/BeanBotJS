@@ -30,7 +30,7 @@ async function createMessage(akin) {
         );
         embed.setImage(img);
         output['components'].push(winActionRow);
-    } else if (akin.currentStep >= 50) {
+    } else if (akin.currentStep >= 75) {
         embed.setTitle('Akinator: You win!');
     } else {
         embed.addFields(
@@ -77,6 +77,7 @@ module.exports = {
                     if(i.message.id === reply.id) {
                         var response = 0;
                         var step = true;
+                        await i.deferUpdate();
                         if(i.customId === 'yes') {response = 0;}
                         else if(i.customId === 'no') {response = 1;}
                         else if(i.customId === 'dk') {response = 2;}
@@ -84,15 +85,15 @@ module.exports = {
                         else if(i.customId === 'probn') {response = 4;}
                         else if(i.customId === 'winyes') {
                             step = false;
-                            await i.update({components: []});
+                            await i.editReply({components: []});
                         } else if(i.customId === 'winno' || i.customId === 'back') {
                             step = false;
                             await akinator.back();
-                            await i.update(await createMessage(akinator));
+                            await i.editReply(await createMessage(akinator));
                         }
                         if(step) {
                             await akinator.step(response);
-                            await i.update(await createMessage(akinator));
+                            await i.editReply(await createMessage(akinator));
                         }
                     }   
                 } catch (error) {
