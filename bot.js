@@ -74,7 +74,7 @@ client.once('ready', () => {
 client.on('ready', () => { //This block is for changing the status on an interval. Should still work fine if more are added to const status above.
     setInterval(() => {
         const index = Math.floor(Math.random() * (status.length -1) + 1);
-        //client.user.setActivity(status[index], {type: "PLAYING"}); //Note: Custom status is a type option, but it does not work. :(
+        client.user.setActivity(status[index], {type: "PLAYING"}); //Note: Custom status is a type option, but it does not work. :(
         client.user.setActivity('Being reprogrammed :(', {type: "PLAYING"});
         console.log('set new status: ' + status[index]);
     }, 600000);
