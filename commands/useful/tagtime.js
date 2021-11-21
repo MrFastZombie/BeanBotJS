@@ -167,8 +167,10 @@ module.exports = {
 
             if(type === null) { type = 'shortdt'; }
             if(printTag === null) { printTag = false; }
-
-            if(isNaN(unixTime)) {
+            
+            if(month < 1 || month > 12) {
+                await interaction.reply({content: 'Month ' + month + ' is invalid.', ephemeral: true});
+            } else if(isNaN(unixTime)) {
                 await interaction.reply({content: 'Input could not be parsed.', ephemeral: true});
             } else if(printTag === true) {
                 await interaction.reply({content: 'The tag for your input is: \n' + '\\' + constructTag(unixTime, type), ephemeral: true});
