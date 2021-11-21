@@ -158,10 +158,14 @@ module.exports = {
                     let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
                     input = months[month-1] + ' ' + day + ', ' + year + ' ' + hour + ':' + minute;
                 } else {
-                    input = hour + ':' + minute;
+                    let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                    const now = new Date;
+                    month = months[now.getMonth()];
+                    //input = hour + ':' + minute;
+                    input = month + ' ' + now.getDate() + ', ' + now.getFullYear() + ' ' + hour + ':' + minute;
                 }
                 if(mer == 'AM' || mer == 'PM') {
-                    input = input + mer;
+                    input = input + ' ' +  mer;
                 }
             let unixTime = Date.parse(input)/1000;
 
