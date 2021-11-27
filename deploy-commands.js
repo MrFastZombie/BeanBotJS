@@ -4,8 +4,8 @@ const { Routes } = require('discord-api-types/v9');
 const fs = require('fs');
 const dotenv = require('dotenv').config(); // eslint-disable-line no-unused-vars
 const dtoken = process.env.DISCORD_TOKEN; // eslint-disable-line no-undef
-const guildID = process.env.DISCORD_GUILD_ID; // eslint-disable-line no-undef
 const userID = process.env.DISCORD_USER_ID; // eslint-disable-line no-undef
+const servers = process.env.DISCORD_GUILD_IDS.split(", ");
 const rest = new REST({ version: '9' }).setToken(dtoken);
 
 var commands = [];
@@ -18,7 +18,7 @@ function loadCommands(path) {
                 var loadFile = require(path + file);
                 commands.push(loadFile.data);
             } else {
-                console.warn("Warning: Unrecognized file found in commands folder " + path);
+                console.warn("Warning: Unrecognized file found in commands folder: " + path);
             }
         });
     } catch (error) {
@@ -30,21 +30,14 @@ function loadCommands(path) {
     try {
         loadCommands('./commands/fun/');
         loadCommands('./commands/useful/');
-
-        commands = commands.map(command => command.toJSON());
-        await rest.put(
-            Routes.applicationGuildCommands(userID, guildID),
-            {body: commands},
-        );
-
-        // eslint-disable-next-line no-undef
-        if(process.env.DISCORD_GUILD_ID2 && process.env.DISCORD_GUILD_ID2 !== '') {
-            await rest.put(
+        servers.forEach(server => {
+            rest.put(
                 // eslint-disable-next-line no-undef
-                Routes.applicationGuildCommands(userID, process.env.DISCORD_GUILD_ID2),
+                Routes.applicationGuildCommands(userID, server),
                 {body: commands},
             );
-        }
+        });
+
         console.log("Commands registered.");
     } catch (error) {
         console.log(error);

@@ -13,14 +13,15 @@ A discord bot themed around beans. Yes, beans. This bot is more of a personal pr
 
 ## How to create a .env
 
-When you have created the .env (NOT AS A .TXT), use this as a template. 
-The guild IDs are for registering commands to servers instantly by running the command registration script. **DISCORD_GUILD_ID2** is entirely optional, but may be used if you want to deploy to a personal server and a test server without using global deploy. **DISCORD_TOKEN** is your bot token. **DISCORD_USER_ID** is your bot's user ID.
+When you have created the .env (NOT AS A .TXT), use this as a template.
+**DISCORD_GUILD_IDS** is for registering commands to test or personal servers instantly by running the command registration script. They should be seperated by a comma and a space, so that they can be loaded as an array for the command registration script. Do not leave out the space after each comma.
+
+**DISCORD_TOKEN** is your bot token. **DISCORD_USER_ID** is your bot's user ID.
 
 ```env
 # .env
 DISCORD_TOKEN=YOURTOKENHERE
-DISCORD_GUILD_ID="GUILD ID 1 HERE"
-DISCORD_GUILD_ID2="(OPTIONAL) GUILD ID 2 HERE"
+DISCORD_GUILD_IDS="GUILDID1, GUILDID2, GUILDID3"
 DISCORD_USER_ID="BOT'S USER ID HERE"
 ```
 
