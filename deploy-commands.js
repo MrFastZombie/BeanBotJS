@@ -5,7 +5,7 @@ const fs = require('fs');
 const dotenv = require('dotenv').config(); // eslint-disable-line no-unused-vars
 const dtoken = process.env.DISCORD_TOKEN; // eslint-disable-line no-undef
 const userID = process.env.DISCORD_USER_ID; // eslint-disable-line no-undef
-const servers = process.env.DISCORD_GUILD_IDS.split(", ");
+const servers = process.env.DISCORD_GUILD_IDS.split(", "); // eslint-disable-line no-undef
 const rest = new REST({ version: '9' }).setToken(dtoken);
 
 var commands = [];
