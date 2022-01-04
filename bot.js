@@ -16,10 +16,6 @@ const status = [
 	"beans"
 ]
 
-function sleep(ms) { // eslint-disable-line no-unused-vars
-	return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 const client = new DiscordJS.Client({
     intents: [DiscordJS.Intents.FLAGS.GUILDS, DiscordJS.Intents.FLAGS.GUILD_MESSAGES, DiscordJS.Intents.FLAGS.GUILD_VOICE_STATES],
 });
@@ -27,7 +23,7 @@ const client = new DiscordJS.Client({
 client.commands = new DiscordJS.Collection();
 const commandFiles = fs.readdirSync('./commands/fun').filter(file => file.endsWith('.js')).concat(fs.readdirSync('./commands/useful').filter(file => file.endsWith('.js')));
 
-for(const file of commandFiles) {
+for(const file of commandFiles) { //Loads the command files from the commands folder.
     var command;
     if(fs.existsSync('./commands/fun/' + file)) {
         command = require('./commands/fun/' + file);
@@ -37,7 +33,7 @@ for(const file of commandFiles) {
     client.commands.set(command.data.name, command);
 }
 
-async function updateDumbList() {
+async function updateDumbList() { //Updates the list of videos from the YouTube Playlist for the Dumb videos command.
     try {
         var t1 = performance.now();
         console.log("Updating dumb video list...");
@@ -66,6 +62,8 @@ client.once('ready', () => {
     let db = new sqlite.Database('./data/beanbot.db', sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE); //Create the database if it does not exist. 
         db.run('CREATE TABLE IF NOT EXISTS dumbvideos(videoID TEXT NOT NULL)');
         db.close();
+
+    //Below: Update the dumb video list at midnight every night. 
     const updateList = schedule.scheduleJob('0 0 * * *', function() { // eslint-disable-line no-unused-vars
         updateDumbList();
     });
@@ -74,8 +72,7 @@ client.once('ready', () => {
 client.on('ready', () => { //This block is for changing the status on an interval. Should still work fine if more are added to const status above.
     setInterval(() => {
         const index = Math.floor(Math.random() * (status.length -1) + 1);
-        client.user.setActivity(status[index], {type: "PLAYING"}); //Note: Custom status is a type option, but it does not work. :(
-        client.user.setActivity('Being reprogrammed :(', {type: "PLAYING"});
+        client.user.setActivity(status[index], {type: "PLAYING"});
         console.log('set new status: ' + status[index]);
     }, 600000);
 });
@@ -88,7 +85,7 @@ client.on('messageCreate', async message => { //For commands that either do not 
     }
 })
 
-client.on('interactionCreate', async interaction => {
+client.on('interactionCreate', async interaction => { //This block runs any commands that are called on Discord which are in seperate command files.
     if(!interaction.isCommand()) return;
     const command = client.commands.get(interaction.commandName);
 
