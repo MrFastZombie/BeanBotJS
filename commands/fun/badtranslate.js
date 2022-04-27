@@ -6,9 +6,14 @@ const languages = ['af', 'am', 'ar', 'az', 'be', 'bg', 'bn', 'bs', 'ca', 'ceb', 
 
 function trans(input, targetLanguage) {
     var output;
-    output = translate(input, {to: targetLanguage}).then(res => {
-        return res.text;
-    })
+    try {
+        output = translate(input, {to: targetLanguage}).then(res => {
+            return res.text;
+        })
+    } catch (error) {
+        //console.error(error);
+        throw 'Encounted an error!';
+    }
     return output;
 }
 
@@ -38,6 +43,7 @@ module.exports = {
             }
         } catch (error) {
             console.error(error);
+            interaction.editReply('Encounted an error :(');
         }
     }
 }
