@@ -29,7 +29,7 @@ module.exports = {
                 await interaction.editReply('The phrase is too long.');
             } else {
                 let output = 'If you get this message, something went wrong.';
-                for (let i = 0; i < 10; i++) {
+                for (let i = 0; i < 5; i++) {
                     let languageSeed = Math.floor(Math.random() * (languages.length - 1) + 1);
                     input = await trans(input, languages[languageSeed]);
                 }
