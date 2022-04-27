@@ -75,7 +75,7 @@ module.exports = {
                     option.setName('meridiem')
                     .setDescription('Whether the time should be interpreted as as AM, PM, or 24hr.')
                     .addChoices([
-                        ['AM', 'PM'],
+                        ['AM', 'AM'],
                         ['PM', 'PM'],
                         ['24hr', '24']
                     ])
