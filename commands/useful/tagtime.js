@@ -1,6 +1,8 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { Interaction } = require('discord.js'); // eslint-disable-line no-unused-vars
 
+//why did i decide that a time zone command was a good idea
+
 /*
     <t:1624855717> 		short date time: 	June 27, 2021 9:48 PM
     <t:1624855717:f> 	short date time 	June 27, 2021 9:48 PM
@@ -81,6 +83,37 @@ module.exports = {
                     ])
                     .setRequired(true))
                 .addStringOption(option =>
+                    option.setName('timezone')
+                    .setDescription('Select your timezone in order to get an accurate time. Take DST into account if applicable.')
+                    .addChoices([
+                        ['UTC-12', '-12'],
+                        ['UTC-11', '-11'],
+                        ['UTC-10', '-10'],
+                        ['UTC-9', '-9'],
+                        ['UTC-8', '-8'],
+                        ['UTC-7', '-7'],
+                        ['UTC-6', '-6'],
+                        ['UTC-5', '-5'],
+                        ['UTC-4', '-4'],
+                        ['UTC-3', '-3'],
+                        ['UTC-2', '-2'],
+                        ['UTC-1', '-1'],
+                        ['UTC', '0'],
+                        ['UTC+1', '1'],
+                        ['UTC+2', '2'],
+                        ['UTC+3', '3'],
+                        ['UTC+4', '4'],
+                        ['UTC+5', '5'],
+                        ['UTC+6', '6'],
+                        ['UTC+7', '7'],
+                        ['UTC+8', '8'],
+                        ['UTC+9', '9'],
+                        ['UTC+10', '10'],
+                        ['UTC+11', '11'],
+                        ['UTC+12', '12']
+                    ])
+                    .setRequired(true))
+                .addStringOption(option =>
                     option.setName('display_mode')
                     .setDescription('How to display the date/time.')
                     .setRequired(false)
@@ -121,6 +154,37 @@ module.exports = {
                     ])
                     .setRequired(true))
                 .addStringOption(option =>
+                    option.setName('timezone')
+                    .setDescription('Select your timezone in order to get an accurate time. Take DST into account if applicable.')
+                    .addChoices([
+                        ['UTC-12', '-12'],
+                        ['UTC-11', '-11'],
+                        ['UTC-10', '-10'],
+                        ['UTC-9', '-9'],
+                        ['UTC-8', '-8'],
+                        ['UTC-7', '-7'],
+                        ['UTC-6', '-6'],
+                        ['UTC-5', '-5'],
+                        ['UTC-4', '-4'],
+                        ['UTC-3', '-3'],
+                        ['UTC-2', '-2'],
+                        ['UTC-1', '-1'],
+                        ['UTC', '0'],
+                        ['UTC+1', '1'],
+                        ['UTC+2', '2'],
+                        ['UTC+3', '3'],
+                        ['UTC+4', '4'],
+                        ['UTC+5', '5'],
+                        ['UTC+6', '6'],
+                        ['UTC+7', '7'],
+                        ['UTC+8', '8'],
+                        ['UTC+9', '9'],
+                        ['UTC+10', '10'],
+                        ['UTC+11', '11'],
+                        ['UTC+12', '12']
+                    ])
+                    .setRequired(true))
+                .addStringOption(option =>
                     option.setName('display_mode')
                     .setDescription('How to display the date/time.')
                     .setRequired(false)
@@ -139,8 +203,11 @@ module.exports = {
                         option.setName('print_tag')
                         .setDescription('Whether you just want the tag or for beanbot to post it')
                         .setRequired(false))),
+
     async execute(interaction) {
         try {
+            let timezone = await interaction.options.getString('timezone');
+            let serverTimezone = (new Date().getTimezoneOffset()/60)*-1;
             let month = await interaction.options.getInteger('month');
             let day, year, hour, minute, mer;
                 if(month !== null) {
@@ -168,11 +235,13 @@ module.exports = {
                     input = input + ' ' +  mer;
                 }
             let unixTime = Date.parse(input)/1000;
-
+            console.log('Unix time before zone correction: '+unixTime+'\n');
+            unixTime = unixTime + (serverTimezone-timezone)*3600;
+            
             if(type === null) { type = 'shortdt'; }
             if(printTag === null) { printTag = false; }
             
-            if(month < 1 || month > 12) {
+            if(month < 1 || month > 12) { //Out of bounds
                 await interaction.reply({content: 'Month ' + month + ' is invalid.', ephemeral: true});
             } else if(isNaN(unixTime)) {
                 await interaction.reply({content: 'Input could not be parsed.', ephemeral: true});
@@ -180,11 +249,13 @@ module.exports = {
                 await interaction.reply({content: 'The tag for your input is: \n' + '\\' + constructTag(unixTime, type), ephemeral: true});
             } else if(message !== null) {
                 let tag = constructTag(unixTime, type);
+
                 if(message.includes('$m')) {
                     message = message.replaceAll('$m', tag);
                 } else {
                     message = message + ' ' + tag;
                 }
+                
                 await interaction.reply(message);
             } else {
                 await interaction.reply(constructTag(unixTime, type));
