@@ -235,7 +235,6 @@ module.exports = {
                     input = input + ' ' +  mer;
                 }
             let unixTime = Date.parse(input)/1000;
-            console.log('Unix time before zone correction: '+unixTime+'\n');
             unixTime = unixTime + (serverTimezone-timezone)*3600;
             
             if(type === null) { type = 'shortdt'; }
