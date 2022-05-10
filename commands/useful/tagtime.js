@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, time } = require('@discordjs/builders');
+const { SlashCommandBuilder} = require('@discordjs/builders');
 const { Interaction } = require('discord.js'); // eslint-disable-line no-unused-vars
 
 const timezones = [
