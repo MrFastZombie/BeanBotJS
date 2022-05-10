@@ -1,5 +1,33 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder, time } = require('@discordjs/builders');
 const { Interaction } = require('discord.js'); // eslint-disable-line no-unused-vars
+
+const timezones = [
+    ['UTC-12', '-12'],
+    ['UTC-11', '-11'],
+    ['UTC-10', '-10'],
+    ['UTC-9', '-9'],
+    ['UTC-8', '-8'],
+    ['UTC-7', '-7'],
+    ['UTC-6', '-6'],
+    ['UTC-5', '-5'],
+    ['UTC-4', '-4'],
+    ['UTC-3', '-3'],
+    ['UTC-2', '-2'],
+    ['UTC-1', '-1'],
+    ['UTC', '+0'],
+    ['UTC+1', '+1'],
+    ['UTC+2', '+2'],
+    ['UTC+3', '+3'],
+    ['UTC+4', '+4'],
+    ['UTC+5', '+5'],
+    ['UTC+6', '+6'],
+    ['UTC+7', '+7'],
+    ['UTC+8', '+8'],
+    ['UTC+9', '+9'],
+    ['UTC+10', '+10'],
+    ['UTC+11', '+11'],
+    ['UTC+12', '+12']
+];
 
 //why did i decide that a time zone command was a good idea
 
@@ -85,33 +113,7 @@ module.exports = {
                 .addStringOption(option =>
                     option.setName('timezone')
                     .setDescription('Select your timezone in order to get an accurate time. Take DST into account if applicable.')
-                    .addChoices([
-                        ['UTC-12', '-12'],
-                        ['UTC-11', '-11'],
-                        ['UTC-10', '-10'],
-                        ['UTC-9', '-9'],
-                        ['UTC-8', '-8'],
-                        ['UTC-7', '-7'],
-                        ['UTC-6', '-6'],
-                        ['UTC-5', '-5'],
-                        ['UTC-4', '-4'],
-                        ['UTC-3', '-3'],
-                        ['UTC-2', '-2'],
-                        ['UTC-1', '-1'],
-                        ['UTC', '0'],
-                        ['UTC+1', '1'],
-                        ['UTC+2', '2'],
-                        ['UTC+3', '3'],
-                        ['UTC+4', '4'],
-                        ['UTC+5', '5'],
-                        ['UTC+6', '6'],
-                        ['UTC+7', '7'],
-                        ['UTC+8', '8'],
-                        ['UTC+9', '9'],
-                        ['UTC+10', '10'],
-                        ['UTC+11', '11'],
-                        ['UTC+12', '12']
-                    ])
+                    .addChoices(timezones)
                     .setRequired(true))
                 .addStringOption(option =>
                     option.setName('display_mode')
@@ -156,33 +158,7 @@ module.exports = {
                 .addStringOption(option =>
                     option.setName('timezone')
                     .setDescription('Select your timezone in order to get an accurate time. Take DST into account if applicable.')
-                    .addChoices([
-                        ['UTC-12', '-12'],
-                        ['UTC-11', '-11'],
-                        ['UTC-10', '-10'],
-                        ['UTC-9', '-9'],
-                        ['UTC-8', '-8'],
-                        ['UTC-7', '-7'],
-                        ['UTC-6', '-6'],
-                        ['UTC-5', '-5'],
-                        ['UTC-4', '-4'],
-                        ['UTC-3', '-3'],
-                        ['UTC-2', '-2'],
-                        ['UTC-1', '-1'],
-                        ['UTC', '0'],
-                        ['UTC+1', '1'],
-                        ['UTC+2', '2'],
-                        ['UTC+3', '3'],
-                        ['UTC+4', '4'],
-                        ['UTC+5', '5'],
-                        ['UTC+6', '6'],
-                        ['UTC+7', '7'],
-                        ['UTC+8', '8'],
-                        ['UTC+9', '9'],
-                        ['UTC+10', '10'],
-                        ['UTC+11', '11'],
-                        ['UTC+12', '12']
-                    ])
+                    .addChoices(timezones)
                     .setRequired(true))
                 .addStringOption(option =>
                     option.setName('display_mode')
@@ -207,7 +183,6 @@ module.exports = {
     async execute(interaction) {
         try {
             let timezone = await interaction.options.getString('timezone');
-            let serverTimezone = (new Date().getTimezoneOffset()/60)*-1;
             let month = await interaction.options.getInteger('month');
             let day, year, hour, minute, mer;
                 if(month !== null) {
@@ -230,12 +205,12 @@ module.exports = {
                     month = months[now.getMonth()];
                     //input = hour + ':' + minute;
                     input = month + ' ' + now.getDate() + ', ' + now.getFullYear() + ' ' + hour + ':' + minute;
-                }
-                if(mer == 'AM' || mer == 'PM') {
+                } if(mer == 'AM' || mer == 'PM') {
                     input = input + ' ' +  mer;
                 }
-            let unixTime = Date.parse(input)/1000;
-            unixTime = unixTime + (serverTimezone-timezone)*3600;
+
+            input = input + timezone + ':00';
+            let unixTime = new Date(input);
             
             if(type === null) { type = 'shortdt'; }
             if(printTag === null) { printTag = false; }
@@ -245,9 +220,9 @@ module.exports = {
             } else if(isNaN(unixTime)) {
                 await interaction.reply({content: 'Input could not be parsed.', ephemeral: true});
             } else if(printTag === true) {
-                await interaction.reply({content: 'The tag for your input is: \n' + '\\' + constructTag(unixTime, type), ephemeral: true});
+                await interaction.reply({content: 'The tag for your input is: \n' + '\\' + constructTag(unixTime.getTime()/1000, type), ephemeral: true});
             } else if(message !== null) {
-                let tag = constructTag(unixTime, type);
+                let tag = constructTag(unixTime.getTime()/1000, type);
 
                 if(message.includes('$m')) {
                     message = message.replaceAll('$m', tag);
@@ -257,7 +232,7 @@ module.exports = {
                 
                 await interaction.reply(message);
             } else {
-                await interaction.reply(constructTag(unixTime, type));
+                await interaction.reply(constructTag(unixTime.getTime()/1000, type));
             }
             
         } catch (error) {
