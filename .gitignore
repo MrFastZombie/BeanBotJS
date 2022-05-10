@@ -116,4 +116,4 @@ dist
 #Other
 data/beanbot.db
 temp/
-
+/BeanBotJS.code-workspace
