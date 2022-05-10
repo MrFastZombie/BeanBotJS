@@ -44,11 +44,13 @@ module.exports = {
                 gameEmbed = new MessageEmbed()
 					.setColor('#0099ff')
 					.setTitle(game.name)
-					.setDescription('https://store.steampowered.com/app/'+game.steam_appid)
-					.addField('Price', gamePrice + ' ' + gameCurrency)
-					.addField('Release Date', game.release_date.date)
-					.addField('Publisher', game.publishers[0], true)
+					.setDescription(game.short_description)
+					.addField('Price', gamePrice + ' ' + gameCurrency, true)
+                    .addField('URL', 'https://s.team/a/'+game.steam_appid,true) //I believe s.team is the official link shortener for Steam. It is used for friend links. 
 					.addField('Developer', game.developers[0], true)
+					.addField('Release Date', game.release_date.date, true)
+                    .addField('Client URL', 'steam://store/' + game.steam_appid, true)
+					.addField('Publisher', game.publishers[0], true)
 					.setImage(game.header_image)
 					.setFooter('Game info credit: Steam Parser by MAPReiff');
 

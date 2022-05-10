@@ -111,4 +111,9 @@ dist
 
 #Personal VScode settings
 /.vscode/settings.json
+*.code-workspace
+
+#Other
 data/beanbot.db
+temp/
+
