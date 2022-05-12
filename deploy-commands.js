@@ -13,7 +13,7 @@ var commands = [];
 function loadCommands(path) {
     try {
         fs.readdirSync(path).forEach(file => {
-            if(file.endsWith('.js')) {
+            if(file.endsWith('.js') || file.endsWith('.ts')) {
                 console.log('Registering ' + file);
                 var loadFile = require(path + file);
                 commands.push(loadFile.data);

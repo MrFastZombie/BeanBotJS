@@ -21,7 +21,7 @@ const client = new DiscordJS.Client({
 });
 
 client.commands = new DiscordJS.Collection();
-const commandFiles = fs.readdirSync('./commands/fun').filter(file => file.endsWith('.js')).concat(fs.readdirSync('./commands/useful').filter(file => file.endsWith('.js')));
+const commandFiles = fs.readdirSync('./commands/fun').filter(file => (file.endsWith('.js') || file.endsWith('.ts'))).concat(fs.readdirSync('./commands/useful').filter(file => (file.endsWith('.js') || file.endsWith('.ts'))));
 
 for(const file of commandFiles) { //Loads the command files from the commands folder.
     var command;
